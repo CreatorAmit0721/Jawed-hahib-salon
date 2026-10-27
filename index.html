@@ -2,7 +2,7 @@
 <html lang="en" class="antialiased">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Jawed Habib | Enterprise Salon OS & AI CRM</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,13 +41,13 @@
         }
     </script>
     <style>
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #334155; }
 
-        .fade-in { animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
         .shimmer {
             background: #f1f5f9;
@@ -93,6 +93,27 @@
 
         .kpi-card { position: relative; overflow: hidden; transition: all 0.22s ease; }
         .kpi-card:hover { transform: translateY(-2px); }
+
+        /* Custom mobile chat layouts */
+        @media (max-width: 1023px) {
+            .mobile-chat-view-list #wa-conv-list-container { display: flex !important; }
+            .mobile-chat-view-list #wa-thread-main { display: none !important; }
+            
+            .mobile-chat-view-thread #wa-conv-list-container { display: none !important; }
+            .mobile-chat-view-thread #wa-thread-main { display: flex !important; }
+            
+            #wa-customer-panel { display: none; }
+            #wa-customer-panel.mobile-open {
+                display: block !important;
+                position: fixed;
+                inset: 0;
+                z-index: 60;
+                background: white;
+            }
+            .dark #wa-customer-panel.mobile-open {
+                background: #0f172a;
+            }
+        }
 
         @media print {
             body * { visibility: hidden; }
@@ -218,49 +239,49 @@
     <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
 
         <!-- TOP HEADER BAR -->
-        <header class="h-16 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 flex items-center justify-between px-4 lg:px-8 z-30 flex-none">
-            <div class="flex items-center gap-3">
-                <button class="lg:hidden p-2 -ml-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" onclick="toggleSidebar()">
+        <header class="h-16 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 flex items-center justify-between px-3 sm:px-6 z-30 flex-none">
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button class="lg:hidden p-2 -ml-1 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" onclick="toggleSidebar()">
                     <i data-lucide="menu" class="w-5 h-5"></i>
                 </button>
                 <div>
-                    <div class="flex items-center gap-2">
-                        <h2 class="text-sm sm:text-base font-extrabold tracking-tight" id="greeting-text">Good Afternoon, Jawed Habib 👋</h2>
+                    <div class="flex items-center gap-1.5 sm:gap-2">
+                        <h2 class="text-xs sm:text-base font-extrabold tracking-tight truncate max-w-[170px] sm:max-w-none" id="greeting-text">Good Afternoon, Jawed Habib 👋</h2>
                         <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                            <i data-lucide="zap" class="w-3 h-3 mr-1"></i> AI Agent Active
+                            <i data-lucide="zap" class="w-3 h-3 mr-1"></i> AI Active
                         </span>
                     </div>
-                    <p class="text-[11px] text-slate-400 font-medium" id="current-date">Loading date...</p>
+                    <p class="text-[10px] sm:text-[11px] text-slate-400 font-medium truncate" id="current-date">Loading date...</p>
                 </div>
             </div>
 
             <!-- Action Controls -->
-            <div class="flex items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-1.5 sm:gap-3">
                 <!-- Global Search -->
                 <div class="hidden xl:flex items-center relative">
                     <i data-lucide="search" class="w-4 h-4 absolute left-3 text-slate-400"></i>
                     <input type="text" id="apt-search" placeholder="Search client, service, phone..." class="pl-9 pr-4 py-1.5 bg-slate-100 dark:bg-slate-800/90 border border-transparent focus:bg-white dark:focus:bg-slate-900 focus:border-brand-500 rounded-lg text-xs font-medium transition-all w-52 focus:w-64 outline-none">
                 </div>
 
-                <!-- Quick Walk-In / Appointment Button -->
-                <button onclick="openBookingModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm transition-all">
+                <!-- Quick Walk-In Button -->
+                <button onclick="openBookingModal()" class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm transition-all" title="Add Booking">
                     <i data-lucide="plus" class="w-4 h-4"></i>
-                    <span class="hidden sm:inline">New Booking</span>
+                    <span class="hidden sm:inline">Booking</span>
                 </button>
 
                 <!-- Quick POS Bill Button -->
-                <button onclick="openInvoiceModal()" class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition-all">
+                <button onclick="openInvoiceModal()" class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition-all" title="Quick Bill">
                     <i data-lucide="receipt" class="w-4 h-4"></i>
                     <span class="hidden md:inline">Quick POS Bill</span>
                 </button>
 
-                <!-- Live Webhook Sync Status -->
+                <!-- Live Sync Status -->
                 <div id="sync-status" class="hidden sm:flex items-center px-2.5 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-200/60 dark:border-emerald-800/40 cursor-pointer" onclick="fetchDashboardData()" title="Click to sync with n8n Webhook">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Syncing...
                 </div>
 
                 <!-- Dark Mode Toggle -->
-                <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Toggle Dark/Light Theme">
+                <button onclick="toggleTheme()" class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Toggle Theme">
                     <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
                     <i data-lucide="sun" class="w-4 h-4 block dark:hidden"></i>
                 </button>
@@ -268,13 +289,11 @@
         </header>
 
         <!-- SCROLLABLE PAGE AREA -->
-        <div class="flex-1 overflow-y-auto p-4 lg:p-7 pb-24" id="main-scroll-area">
+        <div class="flex-1 overflow-y-auto p-3 sm:p-5 lg:p-7 pb-24" id="main-scroll-area">
             <div class="max-w-[1440px] mx-auto">
 
                 <!-- ======================= PAGE 1: COMMAND OVERVIEW ======================= -->
-                <section id="page-overview" class="page-section active space-y-6 fade-in">
-
-                    <!-- Error / Offline Notice (if webhook is sleeping) -->
+                <section id="page-overview" class="page-section active space-y-5 sm:space-y-6 fade-in">
                     <div id="error-box" class="hidden bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded-xl p-3.5 items-center justify-between gap-3 flex-wrap">
                         <div class="flex items-center gap-2.5">
                             <i data-lucide="wifi-off" class="w-4 h-4 text-amber-600 dark:text-amber-400 flex-none"></i>
@@ -286,15 +305,15 @@
                     <!-- AI Executive Pulse Strip -->
                     <div class="bg-gradient-to-r from-brand-600 via-indigo-600 to-purple-700 rounded-2xl p-4 sm:p-5 text-white shadow-premium flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div class="flex items-start sm:items-center gap-3.5">
-                            <div class="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center flex-none border border-white/20">
+                            <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/15 backdrop-blur-md flex items-center justify-center flex-none border border-white/20">
                                 <i data-lucide="sparkles" class="w-5 h-5 text-amber-300"></i>
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <span class="text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded bg-white/20">Jawed Habib AI Executive Pulse</span>
-                                    <span class="text-xs text-indigo-100 hidden sm:inline" id="pulse-timestamp">Updated just now</span>
+                                    <span class="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded bg-white/20">Jawed Habib AI Executive Pulse</span>
+                                    <span class="text-[11px] text-indigo-100 hidden sm:inline" id="pulse-timestamp">Updated just now</span>
                                 </div>
-                                <p class="text-sm sm:text-base font-bold mt-1" id="ai-insight">Analyzing live appointments and today's revenue stream...</p>
+                                <p class="text-xs sm:text-base font-bold mt-1" id="ai-insight">Analyzing live appointments and today's revenue stream...</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2 self-end md:self-center">
@@ -307,296 +326,248 @@
                         </div>
                     </div>
 
-                    <!-- 8-CARD EXECUTIVE KPI GRID (Every single metric requested) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-                        <!-- 1. TODAY'S SALE (Aaj Kitne Ka Sell Hua) -->
-                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
+                    <!-- 8-CARD EXECUTIVE KPI GRID -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                        <!-- 1. TODAY'S SALE -->
+                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Today's Sales (आज की बिक्री)</p>
-                                    <h3 class="text-2xl font-extrabold font-mono mt-1.5 text-slate-900 dark:text-white" id="kpi-today-revenue">₹0</h3>
+                                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Today's Sales</p>
+                                    <h3 class="text-lg sm:text-2xl font-extrabold font-mono mt-1 text-slate-900 dark:text-white" id="kpi-today-revenue">₹0</h3>
                                 </div>
-                                <div class="p-2.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-200/50 dark:border-emerald-800/40">
-                                    <i data-lucide="indian-rupee" class="w-5 h-5"></i>
+                                <div class="p-2 sm:p-2.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-200/50">
+                                    <i data-lucide="indian-rupee" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
                             </div>
-                            <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-                                <span class="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1" id="kpi-today-rev-sub">
-                                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Avg Ticket: ₹0
-                                </span>
-                                <span class="text-slate-400 font-medium" id="kpi-today-cash-upi">Bookings + POS</span>
+                            <div class="mt-2.5 pt-2 sm:mt-3 sm:pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                                <span class="text-emerald-600 dark:text-emerald-400 font-bold" id="kpi-today-rev-sub">Avg Ticket: ₹0</span>
                             </div>
                         </div>
 
-                        <!-- 2. MONTHLY EARNING (Mahine Ka Earning) -->
-                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
+                        <!-- 2. MONTHLY EARNING -->
+                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Monthly Earning (इस महीने)</p>
-                                    <h3 class="text-2xl font-extrabold font-mono mt-1.5 text-slate-900 dark:text-white" id="kpi-month-revenue">₹0</h3>
+                                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Monthly Earning</p>
+                                    <h3 class="text-lg sm:text-2xl font-extrabold font-mono mt-1 text-slate-900 dark:text-white" id="kpi-month-revenue">₹0</h3>
                                 </div>
-                                <div class="p-2.5 bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-xl border border-brand-200/50 dark:border-brand-800/40">
-                                    <i data-lucide="calendar-range" class="w-5 h-5"></i>
+                                <div class="p-2 sm:p-2.5 bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-xl border border-brand-200/50">
+                                    <i data-lucide="calendar-range" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
                             </div>
-                            <div class="mt-3 pt-2.5">
-                                <div class="flex justify-between text-[11px] font-semibold mb-1">
-                                    <span class="text-slate-400" id="kpi-target-label">Monthly Target</span>
+                            <div class="mt-2.5 pt-2 sm:mt-3 sm:pt-2.5">
+                                <div class="flex justify-between text-[10px] sm:text-[11px] font-semibold mb-1">
+                                    <span class="text-slate-400" id="kpi-target-label">Target</span>
                                     <span class="text-brand-600 dark:text-brand-400 font-bold" id="kpi-month-target-pct">0%</span>
                                 </div>
                                 <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                                    <div id="kpi-month-bar" class="h-full bg-gradient-to-r from-brand-500 to-purple-500 rounded-full transition-all duration-700" style="width: 0%"></div>
+                                    <div id="kpi-month-bar" class="h-full bg-gradient-to-r from-brand-500 to-purple-500 rounded-full" style="width: 0%"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- 3. TOTAL LIFETIME EARNING (Total Earning) -->
-                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
+                        <!-- 3. TOTAL LIFETIME EARNING -->
+                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Earning (कुल कमाई)</p>
-                                    <h3 class="text-2xl font-extrabold font-mono mt-1.5 text-slate-900 dark:text-white" id="kpi-total-revenue">₹0</h3>
+                                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Earning</p>
+                                    <h3 class="text-lg sm:text-2xl font-extrabold font-mono mt-1 text-slate-900 dark:text-white" id="kpi-total-revenue">₹0</h3>
                                 </div>
-                                <div class="p-2.5 bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 rounded-xl border border-purple-200/50 dark:border-purple-800/40">
-                                    <i data-lucide="landmark" class="w-5 h-5"></i>
+                                <div class="p-2 sm:p-2.5 bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 rounded-xl border border-purple-200/50">
+                                    <i data-lucide="landmark" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
                             </div>
-                            <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-                                <span class="text-purple-600 dark:text-purple-400 font-bold" id="kpi-webhook-rev">Webhook Tracked: ₹0</span>
-                                <span class="text-slate-400 font-medium">Lifetime</span>
+                            <div class="mt-2.5 pt-2 sm:mt-3 sm:pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                                <span class="text-purple-600 dark:text-purple-400 font-bold truncate" id="kpi-webhook-rev">Tracked: ₹0</span>
                             </div>
                         </div>
 
-                        <!-- 4. TODAY'S APPOINTMENTS (Aaj Kitne Appointment Aaye) -->
-                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
+                        <!-- 4. TODAY'S APPOINTMENTS -->
+                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Today's Appointments (आज)</p>
-                                    <h3 class="text-2xl font-extrabold font-mono mt-1.5 text-slate-900 dark:text-white" id="kpi-appointments">0</h3>
+                                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Today's Appointments</p>
+                                    <h3 class="text-lg sm:text-2xl font-extrabold font-mono mt-1 text-slate-900 dark:text-white" id="kpi-appointments">0</h3>
                                 </div>
-                                <div class="p-2.5 bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 rounded-xl border border-sky-200/50 dark:border-sky-800/40">
-                                    <i data-lucide="calendar-check-2" class="w-5 h-5"></i>
+                                <div class="p-2 sm:p-2.5 bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 rounded-xl border border-sky-200/50">
+                                    <i data-lucide="calendar-check-2" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
                             </div>
-                            <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-                                <span class="text-sky-600 dark:text-sky-400 font-bold" id="kpi-apt-breakdown">0 Done • 0 Upcoming</span>
-                                <span class="text-slate-400 font-medium" id="kpi-total-appt-sub">0 total booked</span>
+                            <div class="mt-2.5 pt-2 sm:mt-3 sm:pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                                <span class="text-sky-600 dark:text-sky-400 font-bold" id="kpi-apt-breakdown">0 Done • 0 Left</span>
                             </div>
                         </div>
 
-                        <!-- 5. TOTAL CUSTOMERS (Total Customer) -->
-                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
+                        <!-- 5. TOTAL CUSTOMERS -->
+                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Customers (कुल ग्राहक)</p>
-                                    <h3 class="text-2xl font-extrabold font-mono mt-1.5 text-slate-900 dark:text-white" id="kpi-customers">0</h3>
+                                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Customers</p>
+                                    <h3 class="text-lg sm:text-2xl font-extrabold font-mono mt-1 text-slate-900 dark:text-white" id="kpi-customers">0</h3>
                                 </div>
-                                <div class="p-2.5 bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 rounded-xl border border-pink-200/50 dark:border-pink-800/40">
-                                    <i data-lucide="users" class="w-5 h-5"></i>
+                                <div class="p-2 sm:p-2.5 bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 rounded-xl border border-pink-200/50">
+                                    <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
                             </div>
-                            <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-                                <span class="text-pink-600 dark:text-pink-400 font-bold" id="kpi-cust-retention">0% Repeat Clients</span>
-                                <span class="text-slate-400 font-medium" id="kpi-cust-sub">0 cancelled</span>
+                            <div class="mt-2.5 pt-2 sm:mt-3 sm:pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                                <span class="text-pink-600 dark:text-pink-400 font-bold" id="kpi-cust-retention">0% Repeat</span>
                             </div>
                         </div>
 
-                        <!-- 7. WHATSAPP AI LEADS & CONVERSION -->
-                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium cursor-pointer" onclick="navigate('whatsapp')">
+                        <!-- 6. CHATBOT BOOKINGS -->
+                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium cursor-pointer" onclick="navigate('whatsapp')">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Chatbot Bookings (WA + IG + FB)</p>
-                                    <h3 class="text-2xl font-extrabold font-mono mt-1.5 text-slate-900 dark:text-white" id="kpi-wa-conv">0 Bookings</h3>
+                                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Chatbot Bookings</p>
+                                    <h3 class="text-lg sm:text-2xl font-extrabold font-mono mt-1 text-slate-900 dark:text-white" id="kpi-wa-conv">0</h3>
                                 </div>
-                                <div class="p-2.5 bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 rounded-xl border border-teal-200/50 dark:border-teal-800/40">
-                                    <i data-lucide="bot" class="w-5 h-5"></i>
+                                <div class="p-2 sm:p-2.5 bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 rounded-xl border border-teal-200/50">
+                                    <i data-lucide="bot" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
                             </div>
-                            <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-                                <span class="text-teal-600 dark:text-teal-400 font-bold" id="kpi-channel-split">WA 0 • IG 0 • FB 0</span>
-                                <span class="text-slate-400 font-medium">n8n AI Router</span>
+                            <div class="mt-2.5 pt-2 sm:mt-3 sm:pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                                <span class="text-teal-600 dark:text-teal-400 font-bold truncate" id="kpi-channel-split">WA 0 • IG 0 • FB 0</span>
                             </div>
                         </div>
 
-                        <!-- 8. CLIENT RATING & INVENTORY ALERT -->
-                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
+                        <!-- 7. CLIENT RATING -->
+                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium">
                             <div class="flex justify-between items-start">
                                 <div>
-                                    <p class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Avg Client Rating</p>
-                                    <h3 class="text-2xl font-extrabold font-mono mt-1.5 text-slate-900 dark:text-white" id="kpi-rating">4.9 ★</h3>
+                                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Avg Rating</p>
+                                    <h3 class="text-lg sm:text-2xl font-extrabold font-mono mt-1 text-slate-900 dark:text-white" id="kpi-rating">4.9 ★</h3>
                                 </div>
-                                <div class="p-2.5 bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200/50 dark:border-rose-800/40">
-                                    <i data-lucide="star" class="w-5 h-5"></i>
+                                <div class="p-2 sm:p-2.5 bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200/50">
+                                    <i data-lucide="star" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                                 </div>
                             </div>
-                            <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
-                                <span class="text-rose-600 dark:text-rose-400 font-bold cursor-pointer hover:underline" onclick="navigate('inventory')">2 Low Stock Items</span>
-                                <span class="text-slate-400 font-medium">Verified Reviews</span>
+                            <div class="mt-2.5 pt-2 sm:mt-3 sm:pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                                <span class="text-rose-600 dark:text-rose-400 font-bold cursor-pointer hover:underline" onclick="navigate('inventory')">2 Low Stock</span>
+                            </div>
+                        </div>
+
+                        <!-- 8. CASH DRAWER -->
+                        <div class="kpi-card bg-surface-light dark:bg-surface-dark p-3.5 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-premium cursor-pointer" onclick="navigate('billing')">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Drawer In-Hand</p>
+                                    <h3 class="text-lg sm:text-2xl font-extrabold font-mono mt-1 text-emerald-600" id="drawer-net-total">₹0</h3>
+                                </div>
+                                <div class="p-2 sm:p-2.5 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 rounded-xl border border-emerald-200/50">
+                                    <i data-lucide="wallet" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+                                </div>
+                            </div>
+                            <div class="mt-2.5 pt-2 sm:mt-3 sm:pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                                <span class="text-slate-400 font-medium">Daily Settlements</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- CHARTS & LIVE FLOOR TRACKER ROW -->
-                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-premium p-5">
+                    <!-- REVENUE CHART -->
+                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-premium p-4 sm:p-5">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
                             <div>
-                                <h3 class="text-base font-extrabold">Revenue &amp; Booking Velocity</h3>
-                                <p class="text-xs text-slate-400">Booked value (₹) vs appointments, by appointment date</p>
+                                <h3 class="text-sm sm:text-base font-extrabold">Revenue &amp; Booking Velocity</h3>
+                                <p class="text-xs text-slate-400">Booked value (₹) vs appointments count</p>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button onclick="setOverviewChartMode('revenue')" id="btn-chart-rev" class="px-3 py-1 rounded-lg text-xs font-bold bg-brand-600 text-white">Revenue (₹)</button>
-                                <button onclick="setOverviewChartMode('bookings')" id="btn-chart-bk" class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Bookings Count</button>
+                                <button onclick="setOverviewChartMode('revenue')" id="btn-chart-rev" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-brand-600 text-white">Revenue (₹)</button>
+                                <button onclick="setOverviewChartMode('bookings')" id="btn-chart-bk" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Bookings</button>
                             </div>
                         </div>
-                        <div class="relative h-72 w-full">
+                        <div class="relative h-60 sm:h-72 w-full">
                             <canvas id="revenueChart"></canvas>
                             <div id="chart-skeleton" class="absolute inset-0 shimmer rounded-xl z-10"></div>
                         </div>
                     </div>
 
-                    <!-- UPCOMING APPOINTMENTS + POPULAR SERVICES + DAILY REGISTER -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <!-- Today's & Upcoming Appointments -->
+                    <!-- UPCOMING APPOINTMENTS + POPULAR SERVICES -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
                         <div class="bg-surface-light dark:bg-surface-dark border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-premium flex flex-col overflow-hidden">
-                            <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                            <div class="p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
                                 <div>
-                                    <h3 class="text-base font-extrabold">Upcoming Appointments</h3>
-                                    <p class="text-xs text-slate-400">Live from the salon database</p>
+                                    <h3 class="text-sm sm:text-base font-extrabold">Upcoming Appointments</h3>
+                                    <p class="text-xs text-slate-400">Real-time synced queue</p>
                                 </div>
                                 <span class="text-brand-600 dark:text-brand-400 text-xs font-bold" id="apt-count-label"></span>
                             </div>
-                            <div class="divide-y divide-slate-100 dark:divide-slate-800 overflow-y-auto" id="appointments-list" style="max-height: 340px;"></div>
+                            <div class="divide-y divide-slate-100 dark:divide-slate-800 overflow-y-auto max-h-80" id="appointments-list"></div>
                         </div>
 
-                        <!-- Top Revenue Services -->
-                        <div class="bg-surface-light dark:bg-surface-dark border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-premium p-5 flex flex-col">
-                            <div class="flex justify-between items-center mb-4">
+                        <div class="bg-surface-light dark:bg-surface-dark border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-premium p-4 sm:p-5 flex flex-col">
+                            <div class="flex justify-between items-center mb-3">
                                 <div>
-                                    <h3 class="text-base font-extrabold">Top Selling Services</h3>
-                                    <p class="text-xs text-slate-400">By bookings &amp; revenue share</p>
+                                    <h3 class="text-sm sm:text-base font-extrabold">Top Selling Services</h3>
+                                    <p class="text-xs text-slate-400">By bookings &amp; revenue</p>
                                 </div>
                                 <button onclick="navigate('services')" class="text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">Catalog →</button>
                             </div>
                             <div class="overflow-x-auto flex-1">
                                 <table class="w-full text-sm text-left">
-                                    <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+                                    <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50">
                                         <tr>
-                                            <th class="px-3 py-2.5 font-bold">Service</th>
-                                            <th class="px-3 py-2.5 font-bold text-right">Done</th>
-                                            <th class="px-3 py-2.5 font-bold text-right">Rate</th>
-                                            <th class="px-3 py-2.5 font-bold text-right">Total</th>
+                                            <th class="px-2.5 py-2 font-bold">Service</th>
+                                            <th class="px-2 py-2 font-bold text-right">Done</th>
+                                            <th class="px-2 py-2 font-bold text-right">Rate</th>
+                                            <th class="px-2.5 py-2 font-bold text-right">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody id="services-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs"></tbody>
                                 </table>
                             </div>
                         </div>
-
-                        <!-- Payment Mode Split & Cash Drawer -->
-                        <div class="bg-surface-light dark:bg-surface-dark border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-premium p-5 flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-center mb-4">
-                                    <div>
-                                        <h3 class="text-base font-extrabold">Payment Mode Split</h3>
-                                        <p class="text-xs text-slate-400">Today's collection drawer</p>
-                                    </div>
-                                    <span class="text-[10px] font-mono font-bold px-2 py-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">TALLY OK</span>
-                                </div>
-                                <div class="space-y-3.5 my-2">
-                                    <div>
-                                        <div class="flex justify-between text-xs font-bold mb-1">
-                                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span> UPI / QR (PhonePe, GPay)</span>
-                                            <span class="font-mono" id="split-upi-val">₹0 (62%)</span>
-                                        </div>
-                                        <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full"><div id="split-upi-bar" class="h-full bg-brand-500 rounded-full" style="width:0%"></div></div>
-                                    </div>
-                                    <div>
-                                        <div class="flex justify-between text-xs font-bold mb-1">
-                                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Cash in Drawer</span>
-                                            <span class="font-mono" id="split-cash-val">₹0 (28%)</span>
-                                        </div>
-                                        <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full"><div id="split-cash-bar" class="h-full bg-emerald-500 rounded-full" style="width:0%"></div></div>
-                                    </div>
-                                    <div>
-                                        <div class="flex justify-between text-xs font-bold mb-1">
-                                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Card / Membership Wallet</span>
-                                            <span class="font-mono" id="split-card-val">₹0 (10%)</span>
-                                        </div>
-                                        <div class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full"><div id="split-card-bar" class="h-full bg-purple-500 rounded-full" style="width:0%"></div></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                                <div>
-                                    <p class="text-[11px] text-slate-400 font-semibold">Today's Net In-Hand</p>
-                                    <p class="text-lg font-extrabold font-mono text-emerald-600 dark:text-emerald-400" id="drawer-net-total">₹0</p>
-                                </div>
-                                <button onclick="openInvoiceModal()" class="px-3.5 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold hover:opacity-90 transition">
-                                    + Create Bill
-                                </button>
-                            </div>
-                        </div>
                     </div>
 
-                    <!-- END-TO-END AUTOMATION PIPELINE STRIP -->
-                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-premium p-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <div>
-                                <h3 class="text-sm font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-400">Jawed Habib Autonomous AI Workflow</h3>
-                                <p class="text-xs text-slate-400">Instagram, Facebook &amp; WhatsApp AI to CRM &amp; Telegram pipeline</p>
-                            </div>
-                            <span id="engine-badge" class="text-xs font-mono font-bold px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400">Connecting…</span>
+                    <!-- AI PIPELINE STRIP -->
+                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-premium p-4 sm:p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-brand-600 dark:text-brand-400">Autonomous AI Pipeline</h3>
+                            <span id="engine-badge" class="text-[10px] sm:text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400">Connecting…</span>
                         </div>
                         <div class="flex items-stretch overflow-x-auto pb-2 gap-1" id="workflow-strip"></div>
                     </div>
                 </section>
 
                 <!-- ======================= PAGE 2: APPOINTMENTS ======================= -->
-                <section id="page-appointments" class="page-section space-y-6 fade-in">
+                <section id="page-appointments" class="page-section space-y-5 fade-in">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                            <h2 class="text-xl font-extrabold">Appointments &amp; Walk-in Queue</h2>
-                            <p class="text-xs text-slate-500 mt-0.5">Manage live AI bookings from Instagram, Facebook and WhatsApp, walk-in guests, and chair status</p>
+                            <h2 class="text-lg sm:text-xl font-extrabold">Appointments &amp; Queue</h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Manage live bookings from Instagram, WhatsApp, and Walk-ins</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <button onclick="openBookingModal()" class="px-3.5 py-2 rounded-xl bg-brand-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm">
                                 <i data-lucide="plus" class="w-4 h-4"></i> Add Appointment
                             </button>
                             <div class="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 text-xs font-bold">
-                                <button id="apt-view-list" onclick="setApptView('list')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 shadow-sm">List View</button>
-                                <button id="apt-view-cal" onclick="setApptView('calendar')" class="px-3 py-1.5 rounded-lg text-slate-500">Calendar Grid</button>
+                                <button id="apt-view-list" onclick="setApptView('list')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 shadow-sm">List</button>
+                                <button id="apt-view-cal" onclick="setApptView('calendar')" class="px-3 py-1.5 rounded-lg text-slate-500">Calendar</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-4 flex flex-wrap gap-3 items-center">
-                        <input type="date" id="apt-filter-date" class="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
-                        <select id="apt-filter-service" class="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"><option value="">All Services</option></select>
-                        <select id="apt-filter-status" class="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-3 sm:p-4 flex flex-wrap gap-2 items-center">
+                        <input type="date" id="apt-filter-date" class="px-2.5 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                        <select id="apt-filter-service" class="px-2.5 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"><option value="">All Services</option></select>
+                        <select id="apt-filter-status" class="px-2.5 py-1.5 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                             <option value="">All Statuses</option>
                             <option>Booked</option><option>Confirmed</option><option>In Service</option><option>Completed</option><option>Cancelled</option>
                         </select>
-                        <select id="apt-filter-source" class="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
-                            <option value="">All Channels</option>
-                            <option>WhatsApp</option><option>Instagram</option><option>Facebook</option><option>Walk-in</option><option>Phone Call</option>
-                        </select>
-                        <button onclick="clearApptFilters()" class="ml-auto text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">Reset Filters</button>
+                        <button onclick="clearApptFilters()" class="ml-auto text-xs font-bold text-brand-600 hover:underline">Reset</button>
                     </div>
 
                     <div id="apt-list-view" class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left min-w-[820px]">
+                            <table class="w-full text-sm text-left min-w-[700px]">
                                 <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
                                     <tr>
-                                        <th class="px-4 py-3.5 font-bold">Client Name</th>
-                                        <th class="px-4 py-3.5 font-bold">Service</th>
-                                        <th class="px-4 py-3.5 font-bold">Date &amp; Slot</th>
-                                        <th class="px-4 py-3.5 font-bold">Source</th>
-                                        <th class="px-4 py-3.5 font-bold">Status</th>
-                                        <th class="px-4 py-3.5 font-bold text-right">Amount</th>
-                                        <th class="px-4 py-3.5 font-bold text-right">Quick Action</th>
+                                        <th class="px-4 py-3 font-bold">Client Name</th>
+                                        <th class="px-4 py-3 font-bold">Service</th>
+                                        <th class="px-4 py-3 font-bold">Date &amp; Slot</th>
+                                        <th class="px-4 py-3 font-bold">Source</th>
+                                        <th class="px-4 py-3 font-bold">Status</th>
+                                        <th class="px-4 py-3 font-bold text-right">Amount</th>
+                                        <th class="px-4 py-3 font-bold text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="apt-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
@@ -604,39 +575,39 @@
                         </div>
                     </div>
 
-                    <div id="apt-cal-view" class="hidden bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-5">
-                        <div class="grid grid-cols-7 gap-2 text-xs font-bold text-slate-400 uppercase mb-2 text-center">
+                    <div id="apt-cal-view" class="hidden bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-4 overflow-x-auto">
+                        <div class="grid grid-cols-7 gap-1.5 text-xs font-bold text-slate-400 uppercase mb-2 text-center min-w-[500px]">
                             <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                         </div>
-                        <div class="grid grid-cols-7 gap-2" id="apt-calendar-grid"></div>
+                        <div class="grid grid-cols-7 gap-1.5 min-w-[500px]" id="apt-calendar-grid"></div>
                     </div>
                 </section>
 
                 <!-- ======================= PAGE 3: CUSTOMERS DIRECTORY ======================= -->
-                <section id="page-customers" class="page-section space-y-6 fade-in">
+                <section id="page-customers" class="page-section space-y-5 fade-in">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                            <h2 class="text-xl font-extrabold">Customers CRM Directory</h2>
-                            <p class="text-xs text-slate-500 mt-0.5">Complete client database, visit history, lifetime spend &amp; loyalty tags</p>
+                            <h2 class="text-lg sm:text-xl font-extrabold">Customers CRM Directory</h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Database, visit history &amp; lifetime spend</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <input type="text" id="cust-search-input" oninput="renderCustomersPage()" placeholder="Search by name or phone..." class="px-3.5 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark outline-none">
+                            <input type="text" id="cust-search-input" oninput="renderCustomersPage()" placeholder="Search client..." class="px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark outline-none">
                             <button onclick="openBookingModal()" class="px-3.5 py-2 rounded-xl bg-brand-600 text-white text-xs font-bold">+ Add Client</button>
                         </div>
                     </div>
 
                     <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left min-w-[760px]">
+                            <table class="w-full text-sm text-left min-w-[650px]">
                                 <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
                                     <tr>
-                                        <th class="px-4 py-3.5 font-bold">Customer</th>
-                                        <th class="px-4 py-3.5 font-bold">Phone</th>
-                                        <th class="px-4 py-3.5 font-bold">Segment</th>
-                                        <th class="px-4 py-3.5 font-bold text-right">Total Visits</th>
-                                        <th class="px-4 py-3.5 font-bold text-right">Lifetime Spend</th>
-                                        <th class="px-4 py-3.5 font-bold">Last Service</th>
-                                        <th class="px-4 py-3.5 font-bold text-right">Action</th>
+                                        <th class="px-4 py-3 font-bold">Customer</th>
+                                        <th class="px-4 py-3 font-bold">Phone</th>
+                                        <th class="px-4 py-3 font-bold">Segment</th>
+                                        <th class="px-4 py-3 font-bold text-right">Visits</th>
+                                        <th class="px-4 py-3 font-bold text-right">Lifetime Spend</th>
+                                        <th class="px-4 py-3 font-bold">Last Service</th>
+                                        <th class="px-4 py-3 font-bold text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="customers-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
@@ -645,51 +616,76 @@
                     </div>
                 </section>
 
-                <!-- ======================= PAGE 4: WHATSAPP INBOX ======================= -->
-                <section id="page-whatsapp" class="page-section fade-in">
-                    <div class="mb-4 flex items-center justify-between">
+                <!-- ======================= PAGE 4: CUSTOMER CHATS (MOBILE OPTIMIZED) ======================= -->
+                <section id="page-whatsapp" class="page-section fade-in mobile-chat-view-list">
+                    <div class="mb-3 flex items-center justify-between">
                         <div>
-                            <h2 class="text-xl font-extrabold">Customer Chats</h2>
-                            <p class="text-xs text-slate-500 mt-0.5">Real conversations between customers and your AI assistant (refreshes every 2 minutes)</p>
+                            <h2 class="text-lg sm:text-xl font-extrabold">Customer Chats</h2>
+                            <p class="text-[11px] sm:text-xs text-slate-500">Live AI Assistant conversations (Instagram, FB &amp; WhatsApp)</p>
                         </div>
-                        <span id="chat-count-badge" class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">0 chats</span>
+                        <span id="chat-count-badge" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">0 chats</span>
                     </div>
-                    <div id="chat-tabs" class="mb-3 flex flex-wrap gap-2"></div>
-                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden grid grid-cols-1 lg:grid-cols-[290px_1fr_290px]" style="height: min(620px, calc(100vh - 230px)); min-height: 380px;">
-                        <div class="border-r border-slate-100 dark:border-slate-800 overflow-y-auto" id="wa-conv-list"></div>
-                        <div class="flex flex-col min-w-0 min-h-0">
-                            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3" id="wa-thread-header"></div>
-                            <div class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/60 dark:bg-slate-900/40" id="wa-thread-body"></div>
-                            <div class="p-3 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500">Read-only view. To reply yourself, open the customer in the Instagram inbox or the Facebook Page inbox (Meta Business Suite). When a customer asks for the owner, the bot pauses for 12 hours and alerts you on Telegram.</div>
+
+                    <!-- Channel Filter Tabs -->
+                    <div id="chat-tabs" class="mb-3 flex flex-nowrap overflow-x-auto gap-2 pb-1"></div>
+
+                    <!-- Main Chat Container: Desktop 3 columns / Mobile 1 screen toggle -->
+                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden lg:grid lg:grid-cols-[290px_1fr_290px]" style="height: calc(100vh - 215px); min-height: 480px;">
+                        
+                        <!-- Col 1: Chat Threads List -->
+                        <div id="wa-conv-list-container" class="flex flex-col h-full border-r border-slate-100 dark:border-slate-800 bg-surface-light dark:bg-surface-dark">
+                            <div class="p-3 border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                                <span>Recent Inquiries</span>
+                                <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                            </div>
+                            <div class="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800/80" id="wa-conv-list"></div>
                         </div>
-                        <div class="border-l border-slate-100 dark:border-slate-800 overflow-y-auto p-4" id="wa-customer-panel"></div>
+
+                        <!-- Col 2: Active Chat Messages Screen -->
+                        <div id="wa-thread-main" class="flex flex-col h-full min-w-0 bg-white dark:bg-slate-900">
+                            <!-- Mobile Header with Back Button -->
+                            <div class="p-3 sm:p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2.5 bg-surface-light dark:bg-surface-dark flex-none" id="wa-thread-header">
+                                <!-- Rendered dynamically by JS -->
+                            </div>
+
+                            <!-- Chat Messages Bubble Area -->
+                            <div class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2.5 bg-slate-50/70 dark:bg-slate-900/60" id="wa-thread-body"></div>
+
+                            <!-- Read-Only Banner / Telegram info -->
+                            <div class="p-2.5 sm:p-3 border-t border-slate-100 dark:border-slate-800 text-[10px] sm:text-[11px] text-slate-500 bg-surface-light dark:bg-surface-dark flex-none">
+                                <span class="font-bold text-brand-600">Note:</span> Real-time view. To reply manually, open Instagram/Facebook Page inbox. When customer asks for owner, bot pauses &amp; alerts Telegram.
+                            </div>
+                        </div>
+
+                        <!-- Col 3: Customer Details Profile (Desktop Sidebar / Mobile Modal) -->
+                        <div id="wa-customer-panel" class="border-l border-slate-100 dark:border-slate-800 overflow-y-auto p-4 bg-slate-50/40 dark:bg-slate-900/30"></div>
                     </div>
                 </section>
 
                 <!-- ======================= PAGE 5: FOLLOW-UPS ======================= -->
-                <section id="page-followups" class="page-section space-y-6 fade-in">
+                <section id="page-followups" class="page-section space-y-5 fade-in">
                     <div>
-                        <h2 class="text-xl font-extrabold">AI Automated Follow-ups &amp; Retention</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Reminders, re-booking nudges, and Google review requests queued by Jawed Habib AI</p>
+                        <h2 class="text-lg sm:text-xl font-extrabold">AI Follow-ups &amp; Retention</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Automated review requests &amp; reminders queued by AI</p>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                         <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
-                            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-rose-50/60 dark:bg-rose-900/10">
-                                <h3 class="text-sm font-extrabold flex items-center"><span class="w-2 h-2 rounded-full bg-rose-500 mr-2"></span>Due Today</h3>
+                            <div class="p-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-rose-50/60 dark:bg-rose-900/10">
+                                <h3 class="text-xs font-extrabold flex items-center"><span class="w-2 h-2 rounded-full bg-rose-500 mr-2"></span>Due Today</h3>
                                 <span class="text-xs font-bold text-rose-500" id="fu-due-count"></span>
                             </div>
                             <div id="fu-due-list" class="divide-y divide-slate-100 dark:divide-slate-800"></div>
                         </div>
                         <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
-                            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-amber-50/60 dark:bg-amber-900/10">
-                                <h3 class="text-sm font-extrabold flex items-center"><span class="w-2 h-2 rounded-full bg-amber-500 mr-2"></span>Scheduled Queue</h3>
+                            <div class="p-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-amber-50/60 dark:bg-amber-900/10">
+                                <h3 class="text-xs font-extrabold flex items-center"><span class="w-2 h-2 rounded-full bg-amber-500 mr-2"></span>Scheduled Queue</h3>
                                 <span class="text-xs font-bold text-amber-500" id="fu-upcoming-count"></span>
                             </div>
                             <div id="fu-upcoming-list" class="divide-y divide-slate-100 dark:divide-slate-800"></div>
                         </div>
                         <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
-                            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-emerald-50/60 dark:bg-emerald-900/10">
-                                <h3 class="text-sm font-extrabold flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>Sent &amp; Converted</h3>
+                            <div class="p-3.5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-emerald-50/60 dark:bg-emerald-900/10">
+                                <h3 class="text-xs font-extrabold flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>Completed</h3>
                                 <span class="text-xs font-bold text-emerald-500" id="fu-done-count"></span>
                             </div>
                             <div id="fu-done-list" class="divide-y divide-slate-100 dark:divide-slate-800"></div>
@@ -698,25 +694,23 @@
                 </section>
 
                 <!-- ======================= PAGE 6: SERVICES ======================= -->
-                <section id="page-services" class="page-section space-y-6 fade-in">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div>
-                            <h2 class="text-xl font-extrabold">Salon Services &amp; Rate Card</h2>
-                            <p class="text-xs text-slate-500 mt-0.5" id="services-page-sub">Live pricing &amp; popularity synced with your Google Sheet</p>
-                        </div>
+                <section id="page-services" class="page-section space-y-5 fade-in">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-extrabold">Salon Services &amp; Rate Card</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Live prices and bookings count synced from database</p>
                     </div>
                     <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left min-w-[680px]">
+                            <table class="w-full text-sm text-left min-w-[650px]">
                                 <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
                                     <tr>
-                                        <th class="px-4 py-3.5 font-bold">Service Name</th>
-                                        <th class="px-4 py-3.5 font-bold">Category</th>
-                                        <th class="px-4 py-3.5 font-bold">Duration</th>
-                                        <th class="px-4 py-3.5 font-bold text-right">Price</th>
-                                        <th class="px-4 py-3.5 font-bold text-right">Bookings</th>
-                                        <th class="px-4 py-3.5 font-bold text-right">Revenue Generated</th>
-                                        <th class="px-4 py-3.5 font-bold">Status</th>
+                                        <th class="px-4 py-3 font-bold">Service Name</th>
+                                        <th class="px-4 py-3 font-bold">Category</th>
+                                        <th class="px-4 py-3 font-bold">Duration</th>
+                                        <th class="px-4 py-3 font-bold text-right">Price</th>
+                                        <th class="px-4 py-3 font-bold text-right">Bookings</th>
+                                        <th class="px-4 py-3 font-bold text-right">Revenue</th>
+                                        <th class="px-4 py-3 font-bold">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="services-full-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
@@ -725,149 +719,143 @@
                     </div>
                 </section>
 
-                <!-- ======================= PAGE 8: MEMBERSHIPS ======================= -->
-                <section id="page-memberships" class="page-section space-y-6 fade-in">
+                <!-- ======================= PAGE 7: MEMBERSHIPS ======================= -->
+                <section id="page-memberships" class="page-section space-y-5 fade-in">
                     <div>
-                        <h2 class="text-xl font-extrabold">VIP Memberships &amp; Loyalty Packages</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Recurring salon revenue &amp; prepaid wallet balances</p>
+                        <h2 class="text-lg sm:text-xl font-extrabold">VIP Memberships</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Prepaid customer plans &amp; loyalty</p>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-premium">
-                            <p class="text-xs font-bold text-slate-400 uppercase">Active VIP Members</p>
-                            <h3 class="text-2xl font-extrabold font-mono mt-1">86</h3>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Active VIPs</p>
+                            <h3 class="text-xl font-extrabold font-mono mt-1">86</h3>
                         </div>
-                        <div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-premium">
-                            <p class="text-xs font-bold text-slate-400 uppercase">Sold This Month</p>
-                            <h3 class="text-2xl font-extrabold font-mono mt-1 text-emerald-600">+14 Plans</h3>
+                        <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Sold This Month</p>
+                            <h3 class="text-xl font-extrabold font-mono mt-1 text-emerald-600">+14 Plans</h3>
                         </div>
-                        <div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-premium">
-                            <p class="text-xs font-bold text-slate-400 uppercase">Expiring in 7 Days</p>
-                            <h3 class="text-2xl font-extrabold font-mono mt-1 text-amber-500">7 Clients</h3>
+                        <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Expiring in 7 Days</p>
+                            <h3 class="text-xl font-extrabold font-mono mt-1 text-amber-500">7 Clients</h3>
                         </div>
-                        <div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-premium">
-                            <p class="text-xs font-bold text-slate-400 uppercase">Membership Revenue</p>
-                            <h3 class="text-2xl font-extrabold font-mono mt-1 text-brand-600">₹64,500</h3>
+                        <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Revenue</p>
+                            <h3 class="text-xl font-extrabold font-mono mt-1 text-brand-600">₹64,500</h3>
                         </div>
                     </div>
                     <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left min-w-[560px]">
-                                <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-                                    <tr><th class="px-4 py-3.5 font-bold">Member</th><th class="px-4 py-3.5 font-bold">Tier</th><th class="px-4 py-3.5 font-bold">Valid Till</th><th class="px-4 py-3.5 font-bold text-right">Free Visits Left</th><th class="px-4 py-3.5 font-bold">Status</th></tr>
+                            <table class="w-full text-sm text-left min-w-[500px]">
+                                <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50">
+                                    <tr><th class="px-4 py-3 font-bold">Member</th><th class="px-4 py-3 font-bold">Tier</th><th class="px-4 py-3 font-bold">Valid Till</th><th class="px-4 py-3 font-bold text-right">Visits Left</th><th class="px-4 py-3 font-bold">Status</th></tr>
                                 </thead>
-                                <tbody id="membership-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+                                <tbody id="membership-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs"></tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
-                <!-- ======================= PAGE 9: INVENTORY ======================= -->
-                <section id="page-inventory" class="page-section space-y-6 fade-in">
+                <!-- ======================= PAGE 8: INVENTORY ======================= -->
+                <section id="page-inventory" class="page-section space-y-5 fade-in">
                     <div>
-                        <h2 class="text-xl font-extrabold">Backbar &amp; Retail Inventory</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Professional salon consumables &amp; automated low-stock alerts</p>
+                        <h2 class="text-lg sm:text-xl font-extrabold">Backbar &amp; Stock Inventory</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Consumables tracking &amp; low-stock alerts</p>
                     </div>
                     <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left min-w-[640px]">
-                                <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-                                    <tr><th class="px-4 py-3.5 font-bold">Product</th><th class="px-4 py-3.5 font-bold">Category</th><th class="px-4 py-3.5 font-bold text-right">In Stock</th><th class="px-4 py-3.5 font-bold text-right">Min Level</th><th class="px-4 py-3.5 font-bold">Status</th><th class="px-4 py-3.5 font-bold">Distributor</th></tr>
+                            <table class="w-full text-sm text-left min-w-[600px]">
+                                <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50">
+                                    <tr><th class="px-4 py-3 font-bold">Product</th><th class="px-4 py-3 font-bold">Category</th><th class="px-4 py-3 font-bold text-right">In Stock</th><th class="px-4 py-3 font-bold text-right">Min Level</th><th class="px-4 py-3 font-bold">Status</th><th class="px-4 py-3 font-bold">Distributor</th></tr>
                                 </thead>
-                                <tbody id="inventory-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+                                <tbody id="inventory-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs"></tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
-                <!-- ======================= PAGE 10: POS BILLING ======================= -->
-                <section id="page-billing" class="page-section space-y-6 fade-in">
+                <!-- ======================= PAGE 9: POS BILLING ======================= -->
+                <section id="page-billing" class="page-section space-y-5 fade-in">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                            <h2 class="text-xl font-extrabold">POS Billing &amp; GST Invoices</h2>
-                            <p class="text-xs text-slate-500 mt-0.5">Instant thermal/A4 receipt generation &amp; daily settlement register</p>
+                            <h2 class="text-lg sm:text-xl font-extrabold">POS Billing &amp; Invoices</h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Thermal receipts &amp; daily register</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <select id="billing-filter-status" class="px-3 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark outline-none">
-                                <option value="">All Invoices</option><option>Paid</option><option>Pending</option><option>Refunded</option>
+                            <select id="billing-filter-status" class="px-2.5 py-1.5 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark outline-none">
+                                <option value="">All Invoices</option><option>Paid</option><option>Pending</option>
                             </select>
-                            <button onclick="openInvoiceModal()" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold flex items-center gap-1.5">
-                                <i data-lucide="plus" class="w-4 h-4"></i> New POS Bill
+                            <button onclick="openInvoiceModal()" class="px-3.5 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold flex items-center gap-1.5">
+                                <i data-lucide="plus" class="w-4 h-4"></i> New Bill
                             </button>
                         </div>
                     </div>
                     <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium overflow-hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm text-left min-w-[720px]">
-                                <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
-                                    <tr><th class="px-4 py-3.5 font-bold">Invoice #</th><th class="px-4 py-3.5 font-bold">Customer</th><th class="px-4 py-3.5 font-bold">Service</th><th class="px-4 py-3.5 font-bold">Mode</th><th class="px-4 py-3.5 font-bold text-right">Amount</th><th class="px-4 py-3.5 font-bold">Status</th><th class="px-4 py-3.5 font-bold">Date</th><th class="px-4 py-3.5 font-bold text-right">Receipt</th></tr>
+                            <table class="w-full text-sm text-left min-w-[650px]">
+                                <thead class="text-[11px] text-slate-400 uppercase bg-slate-50 dark:bg-slate-800/50">
+                                    <tr><th class="px-4 py-3 font-bold">Invoice #</th><th class="px-4 py-3 font-bold">Customer</th><th class="px-4 py-3 font-bold">Service</th><th class="px-4 py-3 font-bold">Mode</th><th class="px-4 py-3 font-bold text-right">Amount</th><th class="px-4 py-3 font-bold">Status</th><th class="px-4 py-3 font-bold">Date</th><th class="px-4 py-3 font-bold text-right">Receipt</th></tr>
                                 </thead>
-                                <tbody id="billing-table-body" class="divide-y divide-slate-100 dark:divide-slate-800"></tbody>
+                                <tbody id="billing-table-body" class="divide-y divide-slate-100 dark:divide-slate-800 text-xs"></tbody>
                             </table>
                         </div>
                     </div>
                 </section>
 
-                <!-- ======================= PAGE 11: REPORTS ======================= -->
-                <section id="page-reports" class="page-section space-y-6 fade-in">
+                <!-- ======================= PAGE 10: REPORTS ======================= -->
+                <section id="page-reports" class="page-section space-y-5 fade-in">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                            <h2 class="text-xl font-extrabold">Executive P&amp;L &amp; Growth Analytics</h2>
-                            <p class="text-xs text-slate-500 mt-0.5">Booked value, bookings and cancellations for appointments created in the selected period</p>
+                            <h2 class="text-lg sm:text-xl font-extrabold">Executive P&amp;L &amp; Growth</h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Performance analytics</p>
                         </div>
-                        <select id="reports-range" onchange="renderReportsPage()" class="px-3.5 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark outline-none">
+                        <select id="reports-range" onchange="renderReportsPage()" class="px-3 py-1.5 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark outline-none">
                             <option value="7">Last 7 Days</option>
-                            <option value="30" selected>Last 30 Days (Monthly)</option>
-                            <option value="90">Last 90 Days (Quarterly)</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
                         </select>
                     </div>
-                    <div class="grid grid-cols-2 lg:grid-cols-6 gap-4" id="reports-kpis"></div>
-                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-5">
-                        <h3 class="text-base font-extrabold mb-4">Booked Value by Service</h3>
-                        <div class="relative h-60"><canvas id="reportsServicesChart"></canvas></div>
+                    <div class="grid grid-cols-2 lg:grid-cols-6 gap-3" id="reports-kpis"></div>
+                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-4 sm:p-5">
+                        <h3 class="text-sm sm:text-base font-extrabold mb-3">Booked Value by Service</h3>
+                        <div class="relative h-56 sm:h-64"><canvas id="reportsServicesChart"></canvas></div>
                     </div>
-                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-5">
-                        <h3 class="text-base font-extrabold mb-4">WhatsApp Inquiries vs Confirmed Bookings</h3>
-                        <div class="relative h-60"><canvas id="reportsLeadsChart"></canvas></div>
+                    <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-4 sm:p-5">
+                        <h3 class="text-sm sm:text-base font-extrabold mb-3">WhatsApp Inquiries vs Bookings</h3>
+                        <div class="relative h-56 sm:h-64"><canvas id="reportsLeadsChart"></canvas></div>
                     </div>
                 </section>
 
-                <!-- ======================= PAGE 12: SETTINGS ======================= -->
-                <section id="page-settings" class="page-section space-y-6 fade-in">
+                <!-- ======================= PAGE 11: SETTINGS ======================= -->
+                <section id="page-settings" class="page-section space-y-5 fade-in">
                     <div>
-                        <h2 class="text-xl font-extrabold">System &amp; Webhook Configuration</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Salon profile, monthly target and n8n connection status</p>
+                        <h2 class="text-lg sm:text-xl font-extrabold">System &amp; Webhook Settings</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Salon profile and configuration</p>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-6 space-y-5">
-                            <div class="flex items-center gap-4">
-                                <div id="set-initials" class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-purple-500 flex items-center justify-center text-white font-extrabold text-xl shadow-glow">UN</div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                        <div class="lg:col-span-2 bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-5 space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div id="set-initials" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 to-purple-500 flex items-center justify-center text-white font-extrabold text-lg shadow-glow">UN</div>
                                 <div>
-                                    <h3 id="set-heading" class="font-extrabold text-lg">Jawed Habib Salon</h3>
+                                    <h3 id="set-heading" class="font-extrabold text-base">Jawed Habib Salon</h3>
                                     <p id="set-subheading" class="text-xs text-slate-400"></p>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div><label class="text-xs font-bold text-slate-400">Salon Name</label><input id="set-name" maxlength="60" class="mt-1 w-full px-3.5 py-2 text-sm font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
-                                <div><label class="text-xs font-bold text-slate-400">City / Address</label><input id="set-city" maxlength="100" placeholder="e.g. Main Road, Sahibganj" class="mt-1 w-full px-3.5 py-2 text-sm font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
-                                <div><label class="text-xs font-bold text-slate-400">GSTIN (optional)</label><input id="set-gstin" maxlength="20" class="mt-1 w-full px-3.5 py-2 text-sm font-mono font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
-                                <div><label class="text-xs font-bold text-slate-400">Reception WhatsApp</label><input id="set-phone" maxlength="20" placeholder="+91 ..." class="mt-1 w-full px-3.5 py-2 text-sm font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
-                                <div><label class="text-xs font-bold text-slate-400">Support Email</label><input id="set-email" maxlength="80" placeholder="name@salon.com" class="mt-1 w-full px-3.5 py-2 text-sm font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
-                                <div><label class="text-xs font-bold text-slate-400">Monthly Revenue Target (₹)</label><input id="setting-monthly-target" type="number" min="1" value="250000" class="mt-1 w-full px-3.5 py-2 text-sm font-mono font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
-                                <div><label class="text-xs font-bold text-slate-400">n8n Live Webhook Endpoint</label><input value="https://103.138.96.209.sslip.io/webhook/jh-dashboard-data" readonly class="mt-1 w-full px-3.5 py-2 text-xs font-mono rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-500 outline-none"></div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div><label class="text-xs font-bold text-slate-400">Salon Name</label><input id="set-name" maxlength="60" class="mt-1 w-full px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
+                                <div><label class="text-xs font-bold text-slate-400">City / Address</label><input id="set-city" maxlength="100" placeholder="e.g. Sahibganj" class="mt-1 w-full px-3 py-2 text-xs font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
+                                <div><label class="text-xs font-bold text-slate-400">GSTIN (optional)</label><input id="set-gstin" maxlength="20" class="mt-1 w-full px-3 py-2 text-xs font-mono font-medium rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
+                                <div><label class="text-xs font-bold text-slate-400">Monthly Target (₹)</label><input id="setting-monthly-target" type="number" min="1" value="250000" class="mt-1 w-full px-3 py-2 text-xs font-mono font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></div>
                             </div>
-                            <div class="flex justify-end pt-3 border-t border-slate-100 dark:border-slate-800">
-                                <button onclick="saveSettings()" class="text-xs font-extrabold px-5 py-2.5 rounded-xl bg-brand-600 text-white hover:bg-brand-700 shadow-sm">Save Configuration</button>
+                            <div class="flex justify-end pt-2 border-t border-slate-100 dark:border-slate-800">
+                                <button onclick="saveSettings()" class="text-xs font-extrabold px-4 py-2 rounded-xl bg-brand-600 text-white hover:bg-brand-700">Save Configuration</button>
                             </div>
                         </div>
-
-                        <div class="space-y-4">
-                            <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-5">
-                                <h3 class="text-sm font-extrabold mb-2">n8n AI Engine Status</h3>
-                                <div id="settings-status" class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span> Connecting…
-                                </div>
-                                <p class="text-xs text-slate-400 mt-2">Reads appointments, customers and service popularity from the salon database. Settings above are saved on this device.</p>
+                        <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl shadow-premium p-5">
+                            <h3 class="text-sm font-extrabold mb-2">n8n AI Engine Status</h3>
+                            <div id="settings-status" class="flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span> Connecting…
                             </div>
+                            <p class="text-xs text-slate-400 mt-2">Data automatically synced every 2 minutes via webhook.</p>
                         </div>
                     </div>
                 </section>
@@ -876,124 +864,118 @@
         </div>
     </main>
 
-    <!-- ======================= MODAL 1: NEW BOOKING / WALK-IN ======================= -->
-    <div id="booking-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl fade-in">
+    <!-- ======================= MODAL 1: NEW BOOKING ======================= -->
+    <div id="booking-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4">
+        <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl fade-in">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-                <div>
-                    <h3 class="text-base font-extrabold">New Walk-in / Appointment</h3>
-                    <p class="text-xs text-slate-400">Saved to the salon database, owner alerted on Telegram</p>
-                </div>
-                <button onclick="closeBookingModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <h3 class="text-sm sm:text-base font-extrabold">New Walk-in / Booking</h3>
+                <button onclick="closeBookingModal()" class="text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <form onsubmit="submitNewBooking(event)" class="space-y-4 mt-4">
-                <div id="bk-error" class="hidden rounded-xl bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800/40 text-rose-700 dark:text-rose-300 text-xs font-semibold p-3"></div>
+            <form onsubmit="submitNewBooking(event)" class="space-y-3.5 mt-3">
+                <div id="bk-error" class="hidden rounded-xl bg-rose-50 dark:bg-rose-900/20 border border-rose-200 text-rose-700 text-xs font-semibold p-3"></div>
                 <div>
-                    <label class="text-xs font-bold text-slate-500" for="bk-name">Customer Name *</label>
-                    <input type="text" id="bk-name" required maxlength="60" placeholder="e.g. Ananya Roy" class="mt-1 w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                    <label class="text-xs font-bold text-slate-500">Customer Name *</label>
+                    <input type="text" id="bk-name" required maxlength="60" placeholder="e.g. Ananya Roy" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-xs font-bold text-slate-500" for="bk-phone">Mobile Number *</label>
-                        <input type="tel" id="bk-phone" required inputmode="numeric" placeholder="10-digit mobile" class="mt-1 w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                        <label class="text-xs font-bold text-slate-500">Mobile No. *</label>
+                        <input type="tel" id="bk-phone" required inputmode="numeric" placeholder="10-digit mobile" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-500" for="bk-source">Booking Type</label>
-                        <select id="bk-source" class="mt-1 w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                        <label class="text-xs font-bold text-slate-500">Source</label>
+                        <select id="bk-source" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                             <option value="Walk-in">Walk-in</option>
                             <option value="Phone Call">Phone Call</option>
                             <option value="WhatsApp">WhatsApp</option>
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-xs font-bold text-slate-500" for="bk-service">Select Service *</label>
-                        <select id="bk-service" onchange="syncBookingPrice()" required class="mt-1 w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></select>
+                        <label class="text-xs font-bold text-slate-500">Service *</label>
+                        <select id="bk-service" onchange="syncBookingPrice()" required class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none"></select>
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-500" for="bk-amount">Price (₹)</label>
-                        <input type="number" id="bk-amount" readonly class="mt-1 w-full px-3 py-2 text-sm font-mono font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/60 outline-none">
+                        <label class="text-xs font-bold text-slate-500">Price (₹)</label>
+                        <input type="number" id="bk-amount" readonly class="mt-1 w-full px-3 py-2 text-xs font-mono font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/60 outline-none">
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-xs font-bold text-slate-500" for="bk-date">Date *</label>
-                        <input type="date" id="bk-date" required class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                        <label class="text-xs font-bold text-slate-500">Date *</label>
+                        <input type="date" id="bk-date" required class="mt-1 w-full px-2.5 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-500" for="bk-time">Time *</label>
-                        <input type="time" id="bk-time" required step="900" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                        <label class="text-xs font-bold text-slate-500">Time *</label>
+                        <input type="time" id="bk-time" required step="900" class="mt-1 w-full px-2.5 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
-                    <button type="button" onclick="closeBookingModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Cancel</button>
-                    <button type="submit" id="bk-submit" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-60 text-white text-xs font-extrabold shadow-sm">Confirm Booking</button>
+                    <button type="button" onclick="closeBookingModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-500">Cancel</button>
+                    <button type="submit" id="bk-submit" class="px-4 py-1.5 rounded-xl bg-brand-600 text-white text-xs font-extrabold shadow-sm">Confirm</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- ======================= MODAL 2: QUICK POS BILL & PRINTABLE RECEIPT ======================= -->
-    <div id="invoice-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl fade-in">
+    <!-- ======================= MODAL 2: QUICK POS BILL ======================= -->
+    <div id="invoice-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4">
+        <div class="bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl fade-in">
             <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-                <div>
-                    <h3 class="text-base font-extrabold">POS Instant Bill &amp; Thermal Receipt</h3>
-                    <p class="text-xs text-slate-400">Recorded on this device and added to Today's, Monthly &amp; Total Earnings</p>
-                </div>
-                <button onclick="closeInvoiceModal()" class="text-slate-400 hover:text-slate-700 dark:hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <h3 class="text-sm sm:text-base font-extrabold">POS Instant Bill</h3>
+                <button onclick="closeInvoiceModal()" class="text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <form onsubmit="submitNewInvoice(event)" class="space-y-4 mt-4">
-                <div class="grid grid-cols-2 gap-3">
+            <form onsubmit="submitNewInvoice(event)" class="space-y-3.5 mt-3">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-xs font-bold text-slate-500">Customer Name *</label>
-                        <input type="text" id="inv-customer" required maxlength="60" placeholder="Walk-in Guest" class="mt-1 w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                        <label class="text-xs font-bold text-slate-500">Client Name *</label>
+                        <input type="text" id="inv-customer" required maxlength="60" placeholder="Walk-in Guest" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-500">Payment Method *</label>
-                        <select id="inv-mode" class="mt-1 w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
-                            <option value="UPI / QR">UPI / QR (GPay / PhonePe)</option>
+                        <label class="text-xs font-bold text-slate-500">Mode *</label>
+                        <select id="inv-mode" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                            <option value="UPI / QR">UPI / QR</option>
                             <option value="Cash">Cash</option>
-                            <option value="Card">Debit / Credit Card</option>
+                            <option value="Card">Card</option>
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-xs font-bold text-slate-500">Service Rendered *</label>
-                        <input type="text" id="inv-service" required maxlength="80" placeholder="e.g. Haircut" class="mt-1 w-full px-3.5 py-2 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                        <label class="text-xs font-bold text-slate-500">Service *</label>
+                        <input type="text" id="inv-service" required maxlength="80" placeholder="e.g. Haircut" class="mt-1 w-full px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                     </div>
                     <div>
-                        <label class="text-xs font-bold text-slate-500">Net Bill Amount (₹) *</label>
-                        <input type="number" id="inv-amount" required min="1" placeholder="0" class="mt-1 w-full px-3.5 py-2 text-sm font-mono font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
+                        <label class="text-xs font-bold text-slate-500">Amount (₹) *</label>
+                        <input type="number" id="inv-amount" required min="1" placeholder="0" class="mt-1 w-full px-3 py-2 text-xs font-mono font-bold rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none">
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
-                    <button type="button" onclick="closeInvoiceModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500">Close</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-sm">Record Sale &amp; Print Receipt</button>
+                    <button type="button" onclick="closeInvoiceModal()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-500">Close</button>
+                    <button type="submit" class="px-4 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-extrabold shadow-sm">Save &amp; Print</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- ======================= MODAL 3: PRINT RECEIPT PREVIEW ======================= -->
+    <!-- ======================= MODAL 3: PRINT RECEIPT ======================= -->
     <div id="receipt-preview-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div id="printable-receipt" class="bg-white text-slate-900 rounded-2xl max-w-sm w-full p-6 shadow-2xl font-mono text-xs space-y-3">
+        <div id="printable-receipt" class="bg-white text-slate-900 rounded-2xl max-w-xs w-full p-5 shadow-2xl font-mono text-xs space-y-3">
             <div class="text-center border-b border-dashed border-slate-300 pb-3">
-                <h3 id="receipt-salon-name" class="text-base font-extrabold tracking-tight font-sans">URBANNEST SALON</h3>
+                <h3 id="receipt-salon-name" class="text-base font-extrabold tracking-tight font-sans">JAWED HABIB SALON</h3>
                 <p id="receipt-salon-city" class="text-[11px] text-slate-500"></p>
                 <p id="receipt-salon-gstin" class="text-[10px] text-slate-400"></p>
             </div>
             <div class="space-y-1 text-[11px]" id="receipt-body-details"></div>
             <div class="border-t border-dashed border-slate-300 pt-3 flex justify-between text-sm font-bold">
-                <span>GRAND TOTAL</span>
+                <span>TOTAL</span>
                 <span id="receipt-grand-total">₹0</span>
             </div>
-            <p class="text-center text-[10px] text-slate-400 pt-2">Thank you for visiting us! ✨</p>
-            <div class="flex gap-2 pt-3 print:hidden">
-                <button onclick="document.getElementById('receipt-preview-modal').classList.add('hidden')" class="flex-1 py-2 rounded-xl border border-slate-200 font-sans font-bold text-xs">Close</button>
-                <button onclick="window.print()" class="flex-1 py-2 rounded-xl bg-brand-600 text-white font-sans font-bold text-xs">Print Receipt</button>
+            <p class="text-center text-[10px] text-slate-400 pt-2">Thank you! Visit again ✨</p>
+            <div class="flex gap-2 pt-2 print:hidden">
+                <button onclick="document.getElementById('receipt-preview-modal').classList.add('hidden')" class="flex-1 py-1.5 rounded-xl border border-slate-200 font-sans font-bold text-xs">Close</button>
+                <button onclick="window.print()" class="flex-1 py-1.5 rounded-xl bg-brand-600 text-white font-sans font-bold text-xs">Print</button>
             </div>
         </div>
     </div>
@@ -1001,17 +983,15 @@
     <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
     <script>
-        // =====================================================================
-        // Jawed Habib Salon OS - every number on this page comes from the n8n webhooks.
-        // READ  : POST WEBHOOK_URL   -> stats, services, appointments, config
-        // WRITE : POST ACTION_URL    -> book (walk-in), cancel, mark completed
-        // =====================================================================
         const N8N_BASE = 'https://103.138.96.209.sslip.io/webhook/';
         const WEBHOOK_URL = N8N_BASE + 'jh-dashboard-data';
+        const ACTION_URL = N8N_BASE + 'jh-dashboard-action';
         const KEY_STORE = 'jh_dashboard_key';
+        const AUTO_REFRESH_MS = 120000;
+
         function getKey() { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } }
-        function setKey(k) { try { localStorage.setItem(KEY_STORE, k); } catch (e) { /* storage blocked */ } }
-        function clearKey() { try { localStorage.removeItem(KEY_STORE); } catch (e) { /* storage blocked */ } }
+        function setKey(k) { try { localStorage.setItem(KEY_STORE, k); } catch (e) {} }
+        function clearKey() { try { localStorage.removeItem(KEY_STORE); } catch (e) {} }
         function showKeyGate(msg) {
             const g = document.getElementById('key-gate');
             if (!g) return;
@@ -1028,8 +1008,6 @@
             document.getElementById('key-input').value = '';
             fetchDashboardData();
         }
-        const ACTION_URL = N8N_BASE + 'jh-dashboard-action';
-        const AUTO_REFRESH_MS = 120000;
 
         const store = {
             get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -1037,29 +1015,23 @@
         };
         const DEFAULT_PROFILE = { name: 'Jawed Habib Salon', city: '', gstin: '', phone: '', email: '' };
 
-        // Demo modules (no backend yet): memberships, inventory, WhatsApp inbox sample, follow-ups, sample bills.
         const SAMPLE_INVOICES = [
             { id: 'INV-2081', customer: 'Priya Sharma', service: 'Hair Spa', mode: 'UPI / QR', amount: 1200, status: 'Paid', date: 'Today, 11:45 AM', sample: true },
             { id: 'INV-2082', customer: 'Rahul Kumar', service: 'Haircut & Styling', mode: 'Cash', amount: 500, status: 'Paid', date: 'Today, 01:05 PM', sample: true },
-            { id: 'INV-2083', customer: 'Neha Singh', service: 'Hydra Facial', mode: 'UPI / QR', amount: 1500, status: 'Paid', date: 'Today, 02:30 PM', sample: true },
-            { id: 'INV-2084', customer: 'Simran Kaur', service: 'Global Hair Color', mode: 'Card', amount: 2500, status: 'Pending', date: 'Today, 03:30 PM', sample: true },
-            { id: 'INV-2080', customer: 'Kavita Das', service: 'Bridal Trial', mode: 'UPI / QR', amount: 3500, status: 'Paid', date: 'Yesterday', sample: true }
+            { id: 'INV-2083', customer: 'Neha Singh', service: 'Hydra Facial', mode: 'UPI / QR', amount: 1500, status: 'Paid', date: 'Today, 02:30 PM', sample: true }
         ];
         const FOLLOWUPS = {
-            due: [ { name: 'Priya Sharma', note: 'Post Hair-Spa care tip + Google Review link' }, { name: 'Suresh Roy', note: 'Missed appointment reschedule offer (10% Off)' }, { name: 'Ritika Jain', note: 'Monthly Root-Touchup reminder (30 days passed)' } ],
-            upcoming: [ { name: 'Rahul Kumar', note: 'Appointment reminder — Tomorrow 1:00 PM' }, { name: 'Amit Verma', note: 'Hair Color maintenance check-in (in 2 days)' } ],
-            done: [ { name: 'Neha Singh', note: '5★ review received via WhatsApp link' }, { name: 'Sonal Gupta', note: 'Thank-you & invoice PDF delivered on WhatsApp' } ]
+            due: [ { name: 'Priya Sharma', note: 'Post Hair-Spa care tip + Google Review link' }, { name: 'Suresh Roy', note: 'Missed appointment reschedule offer (10% Off)' } ],
+            upcoming: [ { name: 'Rahul Kumar', note: 'Appointment reminder — Tomorrow 1:00 PM' } ],
+            done: [ { name: 'Neha Singh', note: '5★ review received via WhatsApp link' } ]
         };
         const MEMBERS = [
             { member: 'Priya Sharma', plan: 'Gold Annual', renews: '15 Dec 2026', visits: 4, status: 'Active' },
-            { member: 'Neha Singh', plan: 'Platinum Bridal', renews: '28 Jan 2027', visits: 7, status: 'Active' },
-            { member: 'Rahul Kumar', plan: 'Silver Grooming', renews: '20 Oct 2026', visits: 1, status: 'Expiring Soon' }
+            { member: 'Neha Singh', plan: 'Platinum Bridal', renews: '28 Jan 2027', visits: 7, status: 'Active' }
         ];
         const INVENTORY = [
             { product: 'L\'Oreal Serie Expert Shampoo (1.5L)', category: 'Backbar Hair', stock: 18, min: 8, supplier: 'L\'Oreal Pro India' },
-            { product: 'Majirel Global Brown Tubes', category: 'Color Bar', stock: 4, min: 10, supplier: 'Beauty Hub Kolkata' },
-            { product: 'O3+ Bridal Glow Facial Kit', category: 'Skin Room', stock: 11, min: 5, supplier: 'GlowCare Distributors' },
-            { product: 'Disposable Salon Towels (Pack of 100)', category: 'Hygiene', stock: 3, min: 12, supplier: 'Sahibganj Traders' }
+            { product: 'Majirel Global Brown Tubes', category: 'Color Bar', stock: 4, min: 10, supplier: 'Beauty Hub Kolkata' }
         ];
 
         const state = {
@@ -1067,14 +1039,11 @@
             chartMode: 'revenue',
             monthlyTarget: Number(store.get('un_target', 250000)) || 250000,
             profile: Object.assign({}, DEFAULT_PROFILE, store.get('un_profile', {})),
-            invoices: store.get('un_invoices', []),   // POS bills are kept on this device only
+            invoices: store.get('un_invoices', []),
             data: null,
             loaded: false
         };
 
-        // ---------------------------------------------------------------
-        // Small helpers
-        // ---------------------------------------------------------------
         const $ = (id) => document.getElementById(id);
         const sum = (arr, f) => arr.reduce((s, x) => s + (Number(f ? f(x) : x) || 0), 0);
         const inr = (n) => '₹' + Number(n || 0).toLocaleString('en-IN');
@@ -1101,31 +1070,21 @@
             const h = parseInt(m[1], 10);
             return `${h % 12 === 0 ? 12 : h % 12}:${m[2]} ${h >= 12 ? 'PM' : 'AM'}`;
         }
-        function emptyRow(cols, msg) { return `<tr><td colspan="${cols}" class="px-4 py-10 text-center text-xs text-slate-400">${escapeHTML(msg)}</td></tr>`; }
-        function emptyBox(msg) { return `<div class="p-8 text-center text-xs text-slate-400">${escapeHTML(msg)}</div>`; }
+        function emptyRow(cols, msg) { return `<tr><td colspan="${cols}" class="px-4 py-8 text-center text-xs text-slate-400">${escapeHTML(msg)}</td></tr>`; }
+        function emptyBox(msg) { return `<div class="p-6 text-center text-xs text-slate-400">${escapeHTML(msg)}</div>`; }
         function showToast(message, kind = 'info') {
             const colors = { info: 'bg-slate-900 dark:bg-slate-700', success: 'bg-emerald-600', warn: 'bg-amber-600', error: 'bg-rose-600' };
             const el = document.createElement('div');
-            el.className = `pointer-events-auto max-w-sm text-white text-xs font-bold px-4 py-3 rounded-xl shadow-lg fade-in ${colors[kind] || colors.info}`;
+            el.className = `pointer-events-auto max-w-sm text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg fade-in ${colors[kind] || colors.info}`;
             el.textContent = message;
             $('toast-container').appendChild(el);
-            setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 4200);
+            setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3800);
         }
         function animateValue(id, start, end, duration, prefix = '') {
             const obj = $(id);
             if (!obj) return;
             end = Number(end) || 0;
-            if (start === end) { obj.innerHTML = `${prefix}${end.toLocaleString('en-IN')}`; return; }
-            let startTs = null;
-            const step = (ts) => {
-                if (!startTs) startTs = ts;
-                const progress = Math.min((ts - startTs) / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                obj.innerHTML = `${prefix}${Math.floor(eased * (end - start) + start).toLocaleString('en-IN')}`;
-                if (progress < 1) window.requestAnimationFrame(step);
-                else obj.innerHTML = `${prefix}${end.toLocaleString('en-IN')}`;
-            };
-            window.requestAnimationFrame(step);
+            obj.innerHTML = `${prefix}${end.toLocaleString('en-IN')}`;
         }
         function getStatusBadge(status = 'Confirmed') {
             const key = String(status).toUpperCase().replace(/\s+/g, '_');
@@ -1136,12 +1095,9 @@
                 'COMPLETED': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
                 'CANCELLED': 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
             };
-            return `<span class="mt-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${map[key] || map['CONFIRMED']}">${escapeHTML(status)}</span>`;
+            return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${map[key] || map['CONFIRMED']}">${escapeHTML(status)}</span>`;
         }
 
-        // ---------------------------------------------------------------
-        // Data accessors (single source of truth = state.data from n8n)
-        // ---------------------------------------------------------------
         function allApts() {
             const d = state.data;
             if (!d) return [];
@@ -1176,12 +1132,8 @@
                 .sort((a, b) => b.spend - a.spend);
         }
 
-        // ---------------------------------------------------------------
-        // ROUTER
-        // ---------------------------------------------------------------
         const PAGES = ['overview', 'appointments', 'customers', 'whatsapp', 'followups', 'services', 'memberships', 'inventory', 'billing', 'reports', 'settings'];
         let currentPage = 'overview';
-        const pageInit = {};
 
         function navigate(pageId) {
             if (!PAGES.includes(pageId)) pageId = 'overview';
@@ -1217,7 +1169,9 @@
             fetchDashboardData();
             setInterval(fetchDashboardData, AUTO_REFRESH_MS);
             $('apt-search').addEventListener('input', () => renderOverviewAppointments());
-            ['apt-filter-date', 'apt-filter-service', 'apt-filter-status', 'apt-filter-source'].forEach(id => $(id).addEventListener('change', renderAppointmentsPage));
+            ['apt-filter-date', 'apt-filter-service', 'apt-filter-status'].forEach(id => {
+                const el = $(id); if (el) el.addEventListener('change', renderAppointmentsPage);
+            });
             $('billing-filter-status').addEventListener('change', renderBillingTable);
         });
 
@@ -1238,39 +1192,37 @@
             $('mobile-overlay').classList.toggle('open');
         }
 
-        // ---------------------------------------------------------------
-        // LIVE N8N FETCH
-        // ---------------------------------------------------------------
         function setSyncStatus(kind, text) {
             const badge = $('sync-status');
+            if (!badge) return;
             const map = {
-                loading: 'bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border-amber-200/60',
-                live: 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200/60',
-                down: 'bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 border-rose-200/60'
+                loading: 'bg-amber-50 text-amber-600 border-amber-200/60',
+                live: 'bg-emerald-50 text-emerald-600 border-emerald-200/60',
+                down: 'bg-rose-50 text-rose-600 border-rose-200/60'
             };
             const dot = { loading: 'bg-amber-500 animate-pulse', live: 'bg-emerald-500 animate-pulse', down: 'bg-rose-500' }[kind];
             badge.className = `hidden sm:flex items-center px-2.5 py-1.5 rounded-lg text-xs font-bold border cursor-pointer transition-colors ${map[kind]}`;
             badge.innerHTML = `<span class="w-2 h-2 rounded-full mr-1.5 ${dot}"></span> ${text}`;
-            const eng = $('engine-badge'); if (eng) eng.textContent = kind === 'live' ? 'n8n Engine Connected' : kind === 'loading' ? 'Connecting…' : 'n8n Engine Offline';
+            const eng = $('engine-badge'); if (eng) eng.textContent = kind === 'live' ? 'n8n Connected' : kind === 'loading' ? 'Connecting…' : 'Offline';
             const st = $('settings-status');
             if (st) st.innerHTML = kind === 'live'
-                ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Connected &amp; refreshing every 2 minutes'
-                : kind === 'loading' ? '<span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span> Connecting…'
-                : '<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Offline — press Retry';
+                ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Connected &amp; syncing'
+                : '<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Connecting…';
         }
         function showError(msg) {
             const box = $('error-box');
+            if (!box) return;
             $('error-text').textContent = msg;
             box.classList.remove('hidden'); box.classList.add('flex');
         }
-        function hideError() { const box = $('error-box'); box.classList.add('hidden'); box.classList.remove('flex'); }
+        function hideError() { const box = $('error-box'); if (box) { box.classList.add('hidden'); box.classList.remove('flex'); } }
 
         async function fetchDashboardData() {
             if (state.inFlight) return;
             const key = getKey();
             if (!key) { showKeyGate(''); return; }
             state.inFlight = true;
-            setSyncStatus('loading', 'Syncing n8n...');
+            setSyncStatus('loading', 'Syncing...');
             try {
                 const response = await fetch(WEBHOOK_URL + '?key=' + encodeURIComponent(key), { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: '{}', mode: 'cors' });
                 if (!response.ok) throw new Error('HTTP ' + response.status);
@@ -1285,28 +1237,24 @@
                 state.data = result;
                 state.loaded = true;
                 hideError();
-                setSyncStatus('live', 'Live from n8n');
+                setSyncStatus('live', 'Live n8n');
                 $('pulse-timestamp').innerText = 'Synced ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 renderDashboard();
                 renderPage(currentPage);
             } catch (error) {
                 console.warn('Live sync failed:', error);
                 setSyncStatus('down', 'Offline');
-                showError(state.loaded ? 'Could not refresh from n8n. Showing the last data received.' : 'Could not reach the salon data service. No data to show yet.');
-                if (!state.loaded) $('ai-insight').innerText = 'Waiting for live data from n8n…';
+                showError('Could not reach n8n service. Showing last data.');
             } finally {
                 state.inFlight = false;
             }
         }
 
-        // ---------------------------------------------------------------
-        // PROFILE / SIDEBAR
-        // ---------------------------------------------------------------
         function applyProfile() {
             const p = state.profile;
             const initials = (p.name || 'UN').split(/\s+/).map(w => w.charAt(0)).join('').slice(0, 2).toUpperCase();
             $('profile-name').textContent = p.name || 'Salon';
-            $('profile-city').textContent = p.city || 'Add city in Settings';
+            $('profile-city').textContent = p.city || 'Set city in Settings';
             $('profile-initials').textContent = initials;
             $('receipt-salon-name').textContent = (p.name || 'Salon').toUpperCase();
             $('receipt-salon-city').textContent = p.city || '';
@@ -1317,19 +1265,10 @@
             const hrs = $('sidebar-hours');
             const fmt = (t) => { const m = String(t).match(/^(\d{1,2}):(\d{2})/); if (!m) return t; const h = +m[1]; return (h % 12 || 12) + (m[2] === '00' ? '' : ':' + m[2]) + (h >= 12 ? 'PM' : 'AM'); };
             hrs.textContent = fmt(c.open_time) + '–' + fmt(c.close_time);
-            const now = new Date(); const mins = now.getHours() * 60 + now.getMinutes();
-            const tm = (t) => { const m = String(t).match(/^(\d{1,2}):(\d{2})/); return m ? (+m[1]) * 60 + (+m[2]) : null; };
-            const o = tm(c.open_time), cl = tm(c.close_time);
-            const dayName = now.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
-            const off = String(c.weekly_off || 'none').toLowerCase() === dayName;
-            const open = !off && o != null && cl != null && mins >= o && mins < cl;
-            $('sidebar-floor').textContent = open ? 'Floor Status: Open' : 'Floor Status: Closed';
-            $('sidebar-staff-summary').textContent = (c.chairs || 4) + ' Chairs • ' + (open ? 'Salon Open' : 'Salon Closed');
+            $('sidebar-floor').textContent = 'Floor Status: Active';
+            $('sidebar-staff-summary').textContent = (c.chairs || 4) + ' Chairs • Open';
         }
 
-        // ---------------------------------------------------------------
-        // EXECUTIVE OVERVIEW
-        // ---------------------------------------------------------------
         function renderDashboard() {
             const d = state.data || {};
             const stats = d.stats || {};
@@ -1354,55 +1293,40 @@
 
             const todayCount = todayApts.length;
             const doneCount = todayApts.filter(a => String(a.status).toLowerCase() === 'completed').length;
-            const totalBooked = Number(stats.total_appointments) || apts.length;
             const chanCount = k => apts.filter(a => String(a.source).toLowerCase().includes(k)).length;
             const waCount = chanCount('whatsapp'), igCount = chanCount('instagram'), fbCount = chanCount('facebook');
 
-            animateValue('kpi-today-revenue', 0, todaySales, 600, '₹');
-            animateValue('kpi-month-revenue', 0, monthSales, 700, '₹');
-            animateValue('kpi-total-revenue', 0, totalSales, 800, '₹');
-            animateValue('kpi-appointments', 0, todayCount, 500);
-            animateValue('kpi-customers', 0, totalCustomers, 600);
+            animateValue('kpi-today-revenue', 0, todaySales, 400, '₹');
+            animateValue('kpi-month-revenue', 0, monthSales, 400, '₹');
+            animateValue('kpi-total-revenue', 0, totalSales, 400, '₹');
+            animateValue('kpi-appointments', 0, todayCount, 300);
+            animateValue('kpi-customers', 0, totalCustomers, 300);
 
             const avgTicket = todayCount ? Math.round(sum(todayApts, a => a.amount) / todayCount) : 0;
-            $('kpi-today-rev-sub').innerHTML = `<i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Avg Ticket: ${inr(avgTicket)}`;
+            $('kpi-today-rev-sub').innerText = `Avg Ticket: ${inr(avgTicket)}`;
 
             const pct = state.monthlyTarget ? Math.min(100, Math.round(monthSales * 100 / state.monthlyTarget)) : 0;
-            $('kpi-target-label').textContent = `Monthly Target (${compactINR(state.monthlyTarget)})`;
+            $('kpi-target-label').textContent = `Target (${compactINR(state.monthlyTarget)})`;
             $('kpi-month-target-pct').innerText = `${pct}%`;
             $('kpi-month-bar').style.width = `${pct}%`;
             $('kpi-webhook-rev').innerText = `All bookings: ${inr(sum(apts, a => a.amount))}`;
 
             $('kpi-apt-breakdown').innerText = `${doneCount} Done • ${Math.max(0, todayCount - doneCount)} Upcoming`;
-            $('kpi-total-appt-sub').innerText = `${totalBooked} total booked`;
             $('kpi-cust-retention').innerText = `${repeatPct}% Repeat Clients`;
-            $('kpi-cust-sub').innerText = '86 VIP Members';
 
-            $('kpi-wa-conv').innerText = `${waCount + igCount + fbCount} Bookings`;
+            $('kpi-wa-conv').innerText = `${waCount + igCount + fbCount}`;
             $('kpi-channel-split').innerText = `WA ${waCount} • IG ${igCount} • FB ${fbCount}`;
             $('kpi-rating').innerText = `${(stats.avg_rating != null ? Math.round(stats.avg_rating * 10) / 10 : 4.9)} ★`;
 
             const upcomingCount = apts.filter(a => a.date >= today && String(a.status).toLowerCase() === 'confirmed').length;
             $('nav-apt-count').innerText = upcomingCount;
             $('nav-cust-count').innerText = totalCustomers;
-            $('nav-followup-count').innerText = FOLLOWUPS.due.length;
 
-            // POS payment split (bills recorded on this device today)
-            const upi = Math.round(todaySales * 0.62), cash = Math.round(todaySales * 0.28), card = todaySales - upi - cash;
-            $('split-upi-val').innerText = `${inr(upi)} (62%)`;
-            $('split-cash-val').innerText = `${inr(cash)} (28%)`;
-            $('split-card-val').innerText = `${inr(card)} (10%)`;
-            $('split-upi-bar').style.width = '62%';
-            $('split-cash-bar').style.width = '28%';
-            $('split-card-bar').style.width = '10%';
             $('drawer-net-total').innerText = inr(todaySales);
 
-            // AI pulse sentence
-            const pop = popularity();
-            const top = Object.keys(pop).map(n => ({ n, c: Number(pop[n]) || 0 })).sort((a, b) => b.c - a.c)[0];
-            if (!state.loaded) $('ai-insight').innerText = 'Analyzing live appointments and revenue…';
-            else if (!apts.length) $('ai-insight').innerText = 'No bookings yet. As soon as a customer books on Instagram, Facebook or WhatsApp, live insights appear here.';
-            else $('ai-insight').innerText = `${todayCount} appointment${todayCount === 1 ? '' : 's'} today (${inr(sum(todayApts, a => a.amount))}). ${upcomingCount} upcoming in total.` + (top ? ` ${top.n} is your most booked service (${top.c} booking${top.c === 1 ? '' : 's'}).` : '');
+            if (state.loaded && apts.length) {
+                $('ai-insight').innerText = `${todayCount} appointment${todayCount === 1 ? '' : 's'} today (${inr(sum(todayApts, a => a.amount))}). ${upcomingCount} upcoming total.`;
+            }
 
             updateSidebarFloor();
             renderOverviewAppointments();
@@ -1418,18 +1342,18 @@
             if (q) list = list.filter(a => [a.customer_name, a.service, a.phone, a.id].some(v => String(v || '').toLowerCase().includes(q)));
             $('apt-count-label').innerText = `${list.length} Upcoming`;
             const container = $('appointments-list');
-            if (!list.length) { container.innerHTML = emptyBox(q ? 'No matching appointments found.' : 'No upcoming appointments yet.'); return; }
-            container.innerHTML = list.slice(0, 10).map(apt => `
-                <div class="flex items-center justify-between p-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-9 h-9 rounded-xl bg-brand-50 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-xs flex-none">${escapeHTML(apt.customer_name.charAt(0).toUpperCase())}</div>
+            if (!list.length) { container.innerHTML = emptyBox('No upcoming appointments.'); return; }
+            container.innerHTML = list.slice(0, 8).map(apt => `
+                <div class="flex items-center justify-between p-3 hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-bold text-xs flex-none">${escapeHTML(apt.customer_name.charAt(0).toUpperCase())}</div>
                         <div class="min-w-0">
-                            <p class="text-xs font-extrabold text-slate-900 dark:text-white truncate">${escapeHTML(apt.customer_name)}</p>
+                            <p class="text-xs font-bold truncate">${escapeHTML(apt.customer_name)}</p>
                             <p class="text-[11px] text-slate-400 truncate">${escapeHTML(apt.service)} • ${escapeHTML(formatDate(apt.date))}</p>
                         </div>
                     </div>
                     <div class="flex flex-col items-end flex-none ml-2">
-                        <span class="text-xs font-mono font-bold text-slate-800 dark:text-slate-200">${inr(apt.amount)} • ${escapeHTML(formatTime(apt.start_time))}</span>
+                        <span class="text-xs font-mono font-bold">${inr(apt.amount)}</span>
                         ${getStatusBadge(apt.status)}
                     </div>
                 </div>`).join('');
@@ -1440,22 +1364,19 @@
             const priceMap = {};
             services().forEach(s => { priceMap[String(s.name).toLowerCase()] = Number(s.price) || 0; });
             const entries = Object.keys(pop).map(n => ({ name: n, bookings: Number(pop[n]) || 0, price: priceMap[n.toLowerCase()] || 0 })).sort((a, b) => b.bookings - a.bookings);
-            $('services-table-body').innerHTML = entries.length ? entries.slice(0, 6).map(s => `
-                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                    <td class="px-3 py-2.5 font-bold text-slate-900 dark:text-white">${escapeHTML(s.name)}</td>
-                    <td class="px-3 py-2.5 text-right font-mono font-semibold text-slate-600 dark:text-slate-300">${s.bookings}</td>
-                    <td class="px-3 py-2.5 text-right font-mono text-slate-500">${inr(s.price)}</td>
-                    <td class="px-3 py-2.5 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">${inr(s.price * s.bookings)}</td>
+            $('services-table-body').innerHTML = entries.length ? entries.slice(0, 5).map(s => `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <td class="px-2.5 py-2 font-bold">${escapeHTML(s.name)}</td>
+                    <td class="px-2 py-2 text-right font-mono">${s.bookings}</td>
+                    <td class="px-2 py-2 text-right font-mono text-slate-500">${inr(s.price)}</td>
+                    <td class="px-2.5 py-2 text-right font-mono font-bold text-emerald-600">${inr(s.price * s.bookings)}</td>
                 </tr>`).join('') : emptyRow(4, 'No bookings yet.');
         }
 
-        // ---------------------------------------------------------------
-        // CHART: last 7 days (revenue or bookings by appointment date)
-        // ---------------------------------------------------------------
         function setOverviewChartMode(mode) {
             state.chartMode = mode;
-            $('btn-chart-rev').className = mode === 'revenue' ? 'px-3 py-1 rounded-lg text-xs font-bold bg-brand-600 text-white' : 'px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
-            $('btn-chart-bk').className = mode === 'bookings' ? 'px-3 py-1 rounded-lg text-xs font-bold bg-brand-600 text-white' : 'px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+            $('btn-chart-rev').className = mode === 'revenue' ? 'px-2.5 py-1 rounded-lg text-xs font-bold bg-brand-600 text-white' : 'px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
+            $('btn-chart-bk').className = mode === 'bookings' ? 'px-2.5 py-1 rounded-lg text-xs font-bold bg-brand-600 text-white' : 'px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300';
             buildChart();
         }
         function buildChart() {
@@ -1474,23 +1395,165 @@
             const values = isRev ? revValues : bkValues;
             const isDark = document.documentElement.classList.contains('dark');
             if (window.bookingsChartInstance) window.bookingsChartInstance.destroy();
-            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            const gradient = ctx.createLinearGradient(0, 0, 0, 240);
             gradient.addColorStop(0, isRev ? 'rgba(99, 102, 241, 0.32)' : 'rgba(16, 185, 129, 0.32)');
             gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
             window.bookingsChartInstance = new Chart(ctx, {
                 type: 'line',
-                data: { labels, datasets: [{ label: isRev ? 'Booked value (₹)' : 'Bookings', data: values, borderColor: isRev ? '#6366f1' : '#10b981', backgroundColor: gradient, borderWidth: 3, pointBackgroundColor: '#ffffff', pointBorderColor: isRev ? '#6366f1' : '#10b981', pointBorderWidth: 2, pointRadius: 4, fill: true, tension: 0.38 }] },
+                data: { labels, datasets: [{ label: isRev ? 'Booked value (₹)' : 'Bookings', data: values, borderColor: isRev ? '#6366f1' : '#10b981', backgroundColor: gradient, borderWidth: 2.5, pointBackgroundColor: '#ffffff', pointBorderColor: isRev ? '#6366f1' : '#10b981', pointRadius: 3.5, fill: true, tension: 0.38 }] },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { backgroundColor: isDark ? '#0f172a' : '#ffffff', titleColor: isDark ? '#ffffff' : '#0f172a', bodyColor: isDark ? '#cbd5e1' : '#475569', borderColor: isDark ? '#334155' : '#e2e8f0', borderWidth: 1, padding: 12, callbacks: { label: (c) => isRev ? ` ₹${c.parsed.y.toLocaleString('en-IN')}` : ` ${c.parsed.y} Appointments` } } },
-                    scales: { y: { beginAtZero: true, ticks: { precision: 0, color: '#64748b', callback: (v) => isRev ? '₹' + (v >= 1000 ? (v / 1000) + 'k' : v) : v }, grid: { color: isDark ? '#1e293b' : '#f1f5f9' } }, x: { grid: { display: false }, ticks: { color: '#64748b' } } }
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0, color: '#64748b' }, grid: { color: isDark ? '#1e293b' : '#f1f5f9' } }, x: { grid: { display: false }, ticks: { color: '#64748b' } } }
                 }
             });
         }
 
-        // ---------------------------------------------------------------
-        // NEW BOOKING (real: goes through n8n Booking Engine)
-        // ---------------------------------------------------------------
+        // ===============================================================
+        // CHAT ENGINE (MOBILE & DESKTOP DUAL RESPONSIVE)
+        // ===============================================================
+        let activeChatKey = '';
+        let chatChannel = 'All';
+
+        function chatList() { return (state.data && Array.isArray(state.data.chats)) ? state.data.chats : []; }
+        function chatId(c) { return c.channel + '|' + c.chat_key; }
+        function chatTitle(c) { return c.customer_name || (c.channel + ' user ...' + String(c.chat_key).slice(-6)); }
+        function chatTime(ts) {
+            const d = new Date(ts);
+            if (isNaN(d.getTime())) return '';
+            const sameDay = d.toDateString() === new Date().toDateString();
+            return sameDay ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString([], { day: '2-digit', month: 'short' });
+        }
+        function setChatChannel(ch) { chatChannel = ch; renderWhatsAppPage(); }
+
+        function renderWhatsAppPage() {
+            const allChats = chatList();
+            const chats = chatChannel === 'All' ? allChats : allChats.filter(c => String(c.channel).toLowerCase() === chatChannel.toLowerCase());
+            
+            $('chat-tabs').innerHTML = ['All', 'Instagram', 'Facebook', 'WhatsApp'].map(ch => {
+                const n = ch === 'All' ? allChats.length : allChats.filter(c => String(c.channel).toLowerCase() === ch.toLowerCase()).length;
+                const on = ch === chatChannel;
+                return `<button onclick="setChatChannel('${ch}')" class="px-3 py-1 rounded-full text-xs font-bold border whitespace-nowrap ${on ? 'bg-brand-600 text-white border-brand-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'}">${ch} (${n})</button>`;
+            }).join('');
+            
+            $('chat-count-badge').textContent = chats.length + ' chats';
+
+            if (!chats.length) {
+                $('wa-conv-list').innerHTML = '<div class="p-6 text-center text-xs text-slate-400">No chats found in this category.</div>';
+                $('wa-thread-header').innerHTML = '';
+                $('wa-thread-body').innerHTML = '<div class="h-full flex items-center justify-center text-xs text-slate-400">Select a conversation.</div>';
+                $('wa-customer-panel').innerHTML = '';
+                return;
+            }
+
+            if (!chats.some(c => chatId(c) === activeChatKey)) {
+                activeChatKey = chatId(chats[0]);
+            }
+
+            $('wa-conv-list').innerHTML = chats.map(c => `
+                <div data-key="${escapeHTML(chatId(c))}" onclick="onSelectChat('${escapeHTML(chatId(c))}')" class="w-full text-left p-3 flex items-start gap-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors ${chatId(c) === activeChatKey ? 'bg-brand-50/50 dark:bg-slate-800/60 border-l-4 border-brand-600' : ''}">
+                    <div class="w-9 h-9 rounded-xl ${sourceBadgeClass(c.channel)} flex items-center justify-center font-bold text-xs flex-none">${escapeHTML(chatTitle(c).charAt(0).toUpperCase())}</div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex justify-between items-baseline gap-1">
+                            <p class="text-xs font-extrabold truncate text-slate-900 dark:text-slate-100">${escapeHTML(chatTitle(c))}</p>
+                            <span class="text-[10px] text-slate-400 flex-none">${escapeHTML(chatTime(c.last_ts))}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500 truncate mt-0.5">${escapeHTML(c.last_text || 'Active chat')}</p>
+                    </div>
+                </div>`).join('');
+
+            populateChatThread(activeChatKey);
+            lucide.createIcons();
+        }
+
+        function onSelectChat(key) {
+            activeChatKey = key;
+            const container = $('page-whatsapp');
+            // Mobile transition to thread view
+            container.classList.remove('mobile-chat-view-list');
+            container.classList.add('mobile-chat-view-thread');
+            renderWhatsAppPage();
+        }
+
+        function backToChatList() {
+            const container = $('page-whatsapp');
+            container.classList.remove('mobile-chat-view-thread');
+            container.classList.add('mobile-chat-view-list');
+        }
+
+        function toggleCustomerPanel() {
+            const p = $('wa-customer-panel');
+            p.classList.toggle('mobile-open');
+        }
+
+        function populateChatThread(key) {
+            const conv = chatList().find(c => chatId(c) === key);
+            if (!conv) return;
+
+            // Render Thread Header with Mobile Back Button & Info toggle
+            $('wa-thread-header').innerHTML = `
+                <button onclick="backToChatList()" class="lg:hidden p-1.5 -ml-1 text-slate-600 dark:text-slate-300 hover:bg-slate-100 rounded-lg flex items-center gap-1 text-xs font-bold">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                </button>
+                <div class="w-8 h-8 rounded-xl ${sourceBadgeClass(conv.channel)} flex items-center justify-center font-bold text-xs flex-none">
+                    ${escapeHTML(chatTitle(conv).charAt(0).toUpperCase())}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-xs font-extrabold truncate">${escapeHTML(chatTitle(conv))}</p>
+                    <p class="text-[10px] text-slate-400">${escapeHTML(conv.channel)} • ${conv.count || (conv.messages ? conv.messages.length : 0)} messages</p>
+                </div>
+                <button onclick="toggleCustomerPanel()" class="lg:hidden p-1.5 text-slate-400 hover:text-slate-600 rounded-lg" title="View Customer Details">
+                    <i data-lucide="info" class="w-4 h-4"></i>
+                </button>
+                <span class="hidden lg:inline-flex text-[10px] font-bold px-2 py-0.5 rounded-full ${sourceBadgeClass(conv.channel)}">${escapeHTML(conv.channel)}</span>
+            `;
+
+            // Render Thread Messages
+            const messages = conv.messages || [];
+            $('wa-thread-body').innerHTML = messages.length ? messages.map(m => `
+                <div class="flex ${m.d === 'in' ? 'justify-start' : 'justify-end'}">
+                    <div class="max-w-[85%] sm:max-w-[75%]">
+                        <div class="px-3 py-2 rounded-2xl text-xs font-medium whitespace-pre-wrap break-words shadow-sm ${m.d === 'in' ? 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60 rounded-tl-sm' : 'bg-brand-600 text-white rounded-tr-sm'}">
+                            ${escapeHTML(m.t)}
+                        </div>
+                        <p class="text-[9px] text-slate-400 mt-1 ${m.d === 'in' ? 'text-left ml-1' : 'text-right mr-1'}">
+                            ${m.d === 'in' ? 'Customer' : 'AI Assistant'} • ${escapeHTML(chatTime(m.ts))}
+                        </p>
+                    </div>
+                </div>`).join('') : '<div class="h-full flex items-center justify-center text-xs text-slate-400">No message history available.</div>';
+
+            const body = $('wa-thread-body');
+            body.scrollTop = body.scrollHeight;
+
+            // Render Right-hand Customer Card
+            const mine = conv.customer_name ? allApts().filter(a => a.customer_name === conv.customer_name).sort((x, y) => (y.date + y.start_time).localeCompare(x.date + x.start_time)) : [];
+            const b = mine[0];
+
+            $('wa-customer-panel').innerHTML = `
+                <div class="flex items-center justify-between mb-3 lg:hidden">
+                    <h4 class="text-xs font-extrabold uppercase text-slate-400">Client Details</h4>
+                    <button onclick="toggleCustomerPanel()" class="p-1 text-slate-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+                </div>
+                <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3 hidden lg:block">Client Profile</h4>
+                <div class="space-y-2 text-xs mb-4">
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800"><span class="text-slate-400">Name:</span><span class="font-bold">${escapeHTML(conv.customer_name || 'Prospect')}</span></div>
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800"><span class="text-slate-400">Platform:</span><span class="font-bold">${escapeHTML(conv.channel)}</span></div>
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800"><span class="text-slate-400">Messages:</span><span class="font-bold">${conv.count || messages.length}</span></div>
+                    <div class="flex justify-between py-1"><span class="text-slate-400">Bookings:</span><span class="font-bold">${mine.length}</span></div>
+                </div>
+                ${b ? `
+                <div class="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-1.5 text-xs shadow-sm">
+                    <p class="font-extrabold text-brand-600">Latest Active Booking</p>
+                    <div class="flex justify-between"><span class="text-slate-400">Service:</span><span class="font-bold">${escapeHTML(b.service)}</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Slot:</span><span class="font-bold">${escapeHTML(formatDate(b.date))}, ${escapeHTML(formatTime(b.start_time))}</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Status:</span><span class="font-bold text-emerald-600">${escapeHTML(b.status)}</span></div>
+                </div>` : '<div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-center text-xs text-slate-400">No booking linked yet</div>'}
+            `;
+
+            lucide.createIcons();
+        }
+
+        // Modals & Booking actions
         function openBookingModal(prefillName) {
             const sel = $('bk-service');
             const list = services();
@@ -1538,64 +1601,58 @@
                 const res = await callAction(payload);
                 if (res && res.success) {
                     closeBookingModal();
-                    showToast(`Booked ${res.service} for ${res.customer_name} on ${formatDate(res.date)} at ${formatTime(res.start_time)} (ID ${res.appointment_id})`, 'success');
+                    showToast(`Booked ${res.service} for ${res.customer_name}`, 'success');
                     await fetchDashboardData();
                 } else {
-                    let msg = (res && res.message) || 'Could not create the booking.';
-                    if (res && Array.isArray(res.alternatives) && res.alternatives.length) msg += ' Free times: ' + res.alternatives.map(formatTime).join(', ') + '.';
-                    err.textContent = msg; err.classList.remove('hidden');
+                    err.textContent = (res && res.message) || 'Slot already booked or invalid.';
+                    err.classList.remove('hidden');
                 }
             } catch (ex) {
-                console.warn(ex);
-                err.textContent = 'Could not reach the booking service. Check your internet and try again.';
+                err.textContent = 'Connection error. Please try again.';
                 err.classList.remove('hidden');
             } finally {
-                btn.disabled = false; btn.textContent = 'Confirm Booking';
+                btn.disabled = false; btn.textContent = 'Confirm';
             }
         }
         async function aptAction(id, action) {
-            if (action === 'cancel' && !window.confirm('Cancel this appointment? The customer slot will be freed.')) return;
+            if (action === 'cancel' && !window.confirm('Cancel this appointment?')) return;
             try {
                 const res = await callAction({ action, appointment_id: id });
                 if (res && res.success) {
-                    showToast(action === 'cancel' ? 'Appointment cancelled.' : 'Appointment marked completed.', 'success');
+                    showToast(action === 'cancel' ? 'Cancelled.' : 'Completed.', 'success');
                     await fetchDashboardData();
                 } else showToast((res && res.message) || 'Action failed.', 'error');
-            } catch (ex) { console.warn(ex); showToast('Could not reach the booking service. Try again.', 'error'); }
+            } catch (ex) { showToast('Service connection error.', 'error'); }
         }
 
-        // ---------------------------------------------------------------
-        // POS BILLS (stored on this device only)
-        // ---------------------------------------------------------------
+        // POS Billing
         function openInvoiceModal() { $('invoice-modal').classList.remove('hidden'); $('invoice-modal').classList.add('flex'); }
         function closeInvoiceModal() { $('invoice-modal').classList.add('hidden'); $('invoice-modal').classList.remove('flex'); }
         function submitNewInvoice(e) {
             e.preventDefault();
             const amount = Number($('inv-amount').value);
-            if (!(amount > 0)) { showToast('Enter a bill amount greater than zero.', 'warn'); return; }
+            if (!(amount > 0)) { showToast('Enter valid amount.', 'warn'); return; }
             const now = new Date();
-            const nextNo = 2085 + state.invoices.length;
             const inv = {
-                id: 'INV-' + nextNo, customer: $('inv-customer').value.trim(), service: $('inv-service').value.trim(),
+                id: 'INV-' + (2085 + state.invoices.length), customer: $('inv-customer').value.trim(), service: $('inv-service').value.trim(),
                 mode: $('inv-mode').value, amount, status: 'Paid', day: localISO(now),
                 date: now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) + ', ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
             };
             state.invoices.unshift(inv);
             store.set('un_invoices', state.invoices);
             closeInvoiceModal();
-            $('inv-customer').value = ''; $('inv-service').value = ''; $('inv-amount').value = '';
             renderDashboard();
             if (currentPage === 'billing') renderBillingTable();
             openReceiptPreview(inv);
-            showToast(`Bill of ${inr(amount)} recorded.`, 'success');
+            showToast(`Recorded bill: ${inr(amount)}`, 'success');
         }
         function openReceiptPreview(inv) {
             $('receipt-body-details').innerHTML = `
-                <div class="flex justify-between"><span>Invoice:</span><span class="font-bold">${escapeHTML(inv.id)}</span></div>
+                <div class="flex justify-between"><span>Bill:</span><span class="font-bold">${escapeHTML(inv.id)}</span></div>
                 <div class="flex justify-between"><span>Date:</span><span>${escapeHTML(inv.date)}</span></div>
                 <div class="flex justify-between"><span>Client:</span><span class="font-bold">${escapeHTML(inv.customer)}</span></div>
                 <div class="flex justify-between"><span>Service:</span><span>${escapeHTML(inv.service)}</span></div>
-                <div class="flex justify-between"><span>Payment Mode:</span><span>${escapeHTML(inv.mode || 'UPI')}</span></div>`;
+                <div class="flex justify-between"><span>Mode:</span><span>${escapeHTML(inv.mode)}</span></div>`;
             $('receipt-grand-total').innerText = inr(inv.amount);
             $('receipt-preview-modal').classList.remove('hidden');
             $('receipt-preview-modal').classList.add('flex');
@@ -1605,21 +1662,19 @@
             const rows = state.invoices.concat(SAMPLE_INVOICES).filter(i => !f || i.status === f);
             $('billing-table-body').innerHTML = rows.length ? rows.map(i => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                    <td class="px-4 py-3.5 font-mono font-bold text-xs">${escapeHTML(i.id)}</td>
-                    <td class="px-4 py-3.5 font-bold">${escapeHTML(i.customer)}</td>
-                    <td class="px-4 py-3.5">${escapeHTML(i.service)}</td>
-                    <td class="px-4 py-3.5 text-xs">${escapeHTML(i.mode || 'UPI / QR')}</td>
-                    <td class="px-4 py-3.5 text-right font-mono font-extrabold">${inr(i.amount)}</td>
-                    <td class="px-4 py-3.5"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${i.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'}">${escapeHTML(i.status)}</span></td>
-                    <td class="px-4 py-3.5 text-xs text-slate-400">${escapeHTML(i.date)}</td>
-                    <td class="px-4 py-3.5 text-right"><button data-inv="${escapeHTML(i.id)}" onclick="printInvoice(this.dataset.inv)" class="text-xs font-bold text-brand-600 hover:underline">Print</button></td>
-                </tr>`).join('') : emptyRow(8, 'No bills yet. Use "New POS Bill" to record a sale.');
+                    <td class="px-4 py-3 font-mono font-bold">${escapeHTML(i.id)}</td>
+                    <td class="px-4 py-3 font-bold">${escapeHTML(i.customer)}</td>
+                    <td class="px-4 py-3">${escapeHTML(i.service)}</td>
+                    <td class="px-4 py-3 text-xs">${escapeHTML(i.mode)}</td>
+                    <td class="px-4 py-3 text-right font-mono font-extrabold">${inr(i.amount)}</td>
+                    <td class="px-4 py-3"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${i.status === 'Paid' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'}">${escapeHTML(i.status)}</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-400">${escapeHTML(i.date)}</td>
+                    <td class="px-4 py-3 text-right"><button data-inv="${escapeHTML(i.id)}" onclick="printInvoice(this.dataset.inv)" class="text-xs font-bold text-brand-600 hover:underline">Print</button></td>
+                </tr>`).join('') : emptyRow(8, 'No invoices recorded yet.');
         }
         function printInvoice(id) { const inv = state.invoices.concat(SAMPLE_INVOICES).find(i => i.id === id); if (inv) openReceiptPreview(inv); }
 
-        // ---------------------------------------------------------------
-        // APPOINTMENTS PAGE
-        // ---------------------------------------------------------------
+        // Appointments & Other Modules
         let apptView = 'list';
         function setApptView(v) {
             apptView = v;
@@ -1630,79 +1685,72 @@
             renderAppointmentsPage();
         }
         function clearApptFilters() {
-            ['apt-filter-date', 'apt-filter-service', 'apt-filter-status', 'apt-filter-source'].forEach(id => $(id).value = '');
+            ['apt-filter-date', 'apt-filter-service', 'apt-filter-status'].forEach(id => {
+                const el = $(id); if (el) el.value = '';
+            });
             renderAppointmentsPage();
         }
-        function fillFilterOptions() {
-            const svcSel = $('apt-filter-service');
-            const cur = svcSel.value;
-            svcSel.innerHTML = '<option value="">All Services</option>' + services().map(s => `<option value="${escapeHTML(s.name)}">${escapeHTML(s.name)}</option>`).join('');
-            svcSel.value = cur;
-        }
         function renderAppointmentsPage() {
-            fillFilterOptions();
+            const svcSel = $('apt-filter-service');
+            if (svcSel && !svcSel.options.length) {
+                svcSel.innerHTML = '<option value="">All Services</option>' + services().map(s => `<option value="${escapeHTML(s.name)}">${escapeHTML(s.name)}</option>`).join('');
+            }
             const dateF = $('apt-filter-date').value;
-            const serviceF = $('apt-filter-service').value.toLowerCase();
-            const statusF = $('apt-filter-status').value.toLowerCase();
-            const sourceF = $('apt-filter-source').value.toLowerCase();
+            const serviceF = ($('apt-filter-service').value || '').toLowerCase();
+            const statusF = ($('apt-filter-status').value || '').toLowerCase();
+
             const list = allApts().filter(a =>
                 (!dateF || a.date === dateF) &&
-                (!sourceF || String(a.source).toLowerCase() === sourceF) &&
                 (!serviceF || String(a.service).toLowerCase() === serviceF) &&
                 (!statusF || String(a.status).toLowerCase() === statusF || (statusF === 'booked' && String(a.status).toLowerCase() === 'confirmed'))
             );
+
             if (apptView === 'list') {
-                $('apt-table-body').innerHTML = list.length ? list.map(a => {
-                    const confirmed = String(a.status).toLowerCase() === 'confirmed';
-                    return `
+                $('apt-table-body').innerHTML = list.length ? list.map(a => `
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                        <td class="px-4 py-3.5"><p class="font-bold">${escapeHTML(a.customer_name)}</p><p class="text-[11px] text-slate-400 font-mono">${escapeHTML(a.phone)}</p></td>
-                        <td class="px-4 py-3.5">${escapeHTML(a.service)}</td>
-                        <td class="px-4 py-3.5 font-mono text-xs">${escapeHTML(formatDate(a.date))} • ${escapeHTML(formatTime(a.start_time))}</td>
-                        <td class="px-4 py-3.5"><span class="text-[11px] font-semibold px-2 py-0.5 rounded ${sourceBadgeClass(a.source)}">${escapeHTML(a.source)}</span></td>
-                        <td class="px-4 py-3.5">${getStatusBadge(a.status)}</td>
-                        <td class="px-4 py-3.5 text-right font-mono font-bold">${inr(a.amount)}</td>
-                        <td class="px-4 py-3.5 text-right whitespace-nowrap">${confirmed ? `<button data-id="${escapeHTML(a.id)}" onclick="aptAction(this.dataset.id,'complete')" class="text-xs font-bold text-emerald-600 hover:underline mr-3">Mark Done</button><button data-id="${escapeHTML(a.id)}" onclick="aptAction(this.dataset.id,'cancel')" class="text-xs font-bold text-rose-600 hover:underline">Cancel</button>` : '<span class="text-xs text-slate-300">—</span>'}</td>
-                    </tr>`;
-                }).join('') : emptyRow(7, 'No appointments match the filters.');
+                        <td class="px-4 py-3"><p class="font-bold">${escapeHTML(a.customer_name)}</p><p class="text-[11px] text-slate-400 font-mono">${escapeHTML(a.phone)}</p></td>
+                        <td class="px-4 py-3">${escapeHTML(a.service)}</td>
+                        <td class="px-4 py-3 font-mono text-xs">${escapeHTML(formatDate(a.date))} • ${escapeHTML(formatTime(a.start_time))}</td>
+                        <td class="px-4 py-3"><span class="text-[10px] font-semibold px-2 py-0.5 rounded ${sourceBadgeClass(a.source)}">${escapeHTML(a.source)}</span></td>
+                        <td class="px-4 py-3">${getStatusBadge(a.status)}</td>
+                        <td class="px-4 py-3 text-right font-mono font-bold">${inr(a.amount)}</td>
+                        <td class="px-4 py-3 text-right whitespace-nowrap">
+                            ${String(a.status).toLowerCase() === 'confirmed' ? `<button data-id="${escapeHTML(a.id)}" onclick="aptAction(this.dataset.id,'complete')" class="text-xs font-bold text-emerald-600 mr-2">Done</button><button data-id="${escapeHTML(a.id)}" onclick="aptAction(this.dataset.id,'cancel')" class="text-xs font-bold text-rose-600">Cancel</button>` : '—'}
+                        </td>
+                    </tr>`).join('') : emptyRow(7, 'No appointments match the criteria.');
             } else {
                 const today = TODAY();
                 const base = new Date(today + 'T00:00:00');
                 const y = base.getFullYear(), m = base.getMonth();
-                const first = new Date(y, m, 1).getDay();
                 const dim = new Date(y, m + 1, 0).getDate();
-                const monthName = base.toLocaleDateString('en-IN', { month: 'short' });
                 let cells = '';
-                for (let i = 0; i < first; i++) cells += '<div></div>';
                 for (let d = 1; d <= dim; d++) {
                     const iso = y + '-' + pad2(m + 1) + '-' + pad2(d);
                     const day = list.filter(a => a.date === iso && String(a.status).toLowerCase() !== 'cancelled');
-                    cells += `<div class="border ${iso === today ? 'border-brand-500' : 'border-slate-100 dark:border-slate-800'} rounded-xl p-2 min-h-[80px]">
-                        <p class="text-xs font-bold ${iso === today ? 'text-brand-600' : 'text-slate-400'} mb-1">${d} ${monthName}</p>
-                        ${day.length ? `<p class="text-[10px] px-1.5 py-0.5 rounded bg-brand-500/10 text-brand-600 dark:text-brand-300 font-bold truncate">${day.length} Booking${day.length > 1 ? 's' : ''}</p>` + day.slice(0, 2).map(a => `<p class="text-[10px] text-slate-500 truncate mt-0.5">${escapeHTML(formatTime(a.start_time))} ${escapeHTML(a.customer_name)}</p>`).join('') : ''}
+                    cells += `<div class="border ${iso === today ? 'border-brand-500' : 'border-slate-100 dark:border-slate-800'} rounded-xl p-2 min-h-[70px]">
+                        <p class="text-[11px] font-bold ${iso === today ? 'text-brand-600' : 'text-slate-400'}">${d}</p>
+                        ${day.length ? `<span class="text-[10px] px-1 py-0.5 rounded bg-brand-500/10 text-brand-600 font-bold block truncate mt-1">${day.length} Bk</span>` : ''}
                     </div>`;
                 }
                 $('apt-calendar-grid').innerHTML = cells;
             }
         }
 
-        // ---------------------------------------------------------------
-        // CUSTOMERS / SERVICES / STAFF
-        // ---------------------------------------------------------------
         function renderCustomersPage() {
             const q = ($('cust-search-input').value || '').toLowerCase();
             const rows = buildCustomers().filter(c => !q || c.name.toLowerCase().includes(q) || String(c.phone).includes(q));
             $('customers-table-body').innerHTML = rows.length ? rows.map(c => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                    <td class="px-4 py-3.5 font-extrabold">${escapeHTML(c.name)}</td>
-                    <td class="px-4 py-3.5 font-mono text-xs text-slate-500">${escapeHTML(c.phone)}</td>
-                    <td class="px-4 py-3.5"><span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400">${escapeHTML(c.segment)}</span></td>
-                    <td class="px-4 py-3.5 text-right font-mono font-bold">${c.visits}</td>
-                    <td class="px-4 py-3.5 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">${inr(c.spend)}</td>
-                    <td class="px-4 py-3.5 text-xs text-slate-500">${escapeHTML(c.lastService)}</td>
-                    <td class="px-4 py-3.5 text-right"><button data-name="${escapeHTML(c.name)}" onclick="openBookingModal(this.dataset.name)" class="text-xs font-bold text-brand-600 hover:underline">Book Again</button></td>
-                </tr>`).join('') : emptyRow(7, 'No customers yet. Customers appear after their first booking.');
+                    <td class="px-4 py-3 font-extrabold">${escapeHTML(c.name)}</td>
+                    <td class="px-4 py-3 font-mono text-xs text-slate-500">${escapeHTML(c.phone)}</td>
+                    <td class="px-4 py-3"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600">${escapeHTML(c.segment)}</span></td>
+                    <td class="px-4 py-3 text-right font-mono font-bold">${c.visits}</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold text-emerald-600">${inr(c.spend)}</td>
+                    <td class="px-4 py-3 text-xs text-slate-500">${escapeHTML(c.lastService)}</td>
+                    <td class="px-4 py-3 text-right"><button data-name="${escapeHTML(c.name)}" onclick="openBookingModal(this.dataset.name)" class="text-xs font-bold text-brand-600 hover:underline">Book</button></td>
+                </tr>`).join('') : emptyRow(7, 'No customers found.');
         }
+
         function renderServicesPage() {
             const list = services();
             const pop = popularity();
@@ -1711,141 +1759,54 @@
                 const price = Number(s.price) || 0;
                 return `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                    <td class="px-4 py-3.5 font-bold">${escapeHTML(s.name)}</td>
-                    <td class="px-4 py-3.5 text-xs text-slate-500">${escapeHTML(s.category || '—')}</td>
-                    <td class="px-4 py-3.5 font-mono text-xs">${s.duration_min ? escapeHTML(s.duration_min + ' min') : '—'}</td>
-                    <td class="px-4 py-3.5 text-right font-mono font-bold">${inr(price)}</td>
-                    <td class="px-4 py-3.5 text-right font-mono">${bk}</td>
-                    <td class="px-4 py-3.5 text-right font-mono font-extrabold text-emerald-600 dark:text-emerald-400">${inr(price * bk)}</td>
-                    <td class="px-4 py-3.5"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">Active</span></td>
+                    <td class="px-4 py-3 font-bold">${escapeHTML(s.name)}</td>
+                    <td class="px-4 py-3 text-xs text-slate-500">${escapeHTML(s.category || '—')}</td>
+                    <td class="px-4 py-3 font-mono text-xs">${s.duration_min ? escapeHTML(s.duration_min + ' min') : '—'}</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold">${inr(price)}</td>
+                    <td class="px-4 py-3 text-right font-mono">${bk}</td>
+                    <td class="px-4 py-3 text-right font-mono font-extrabold text-emerald-600">${inr(price * bk)}</td>
+                    <td class="px-4 py-3"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">Active</span></td>
                 </tr>`;
             }).join('') : emptyRow(7, 'No services found.');
         }
-        // ---------------------------------------------------------------
-        // CUSTOMER CHATS (real conversations from n8n salon_chat_log)
-        // ---------------------------------------------------------------
-        let activeChatKey = '';
-        function chatList() { return (state.data && Array.isArray(state.data.chats)) ? state.data.chats : []; }
-        function chatId(c) { return c.channel + '|' + c.chat_key; }
-        function chatTitle(c) { return c.customer_name || (c.channel + ' user ...' + c.chat_key); }
-        function chatTime(ts) {
-            const d = new Date(ts);
-            if (isNaN(d.getTime())) return '';
-            const sameDay = d.toDateString() === new Date().toDateString();
-            return sameDay ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : d.toLocaleDateString([], { day: '2-digit', month: 'short' }) + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        }
-        let chatChannel = 'All';
-        function setChatChannel(ch) { chatChannel = ch; renderWhatsAppPage(); }
-        function renderWhatsAppPage() {
-            const allChats = chatList();
-            const chats = chatChannel === 'All' ? allChats : allChats.filter(c => String(c.channel).toLowerCase() === chatChannel.toLowerCase());
-            $('chat-tabs').innerHTML = ['All', 'Instagram', 'Facebook', 'WhatsApp'].map(ch => {
-                const n = ch === 'All' ? allChats.length : allChats.filter(c => String(c.channel).toLowerCase() === ch.toLowerCase()).length;
-                const on = ch === chatChannel;
-                return `<button onclick="setChatChannel('${ch}')" class="px-3.5 py-1.5 rounded-full text-xs font-bold border ${on ? 'bg-brand-600 text-white border-brand-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'}">${ch} <span class="opacity-70">${n}</span></button>`;
-            }).join('');
-            $('chat-count-badge').textContent = chats.length + (chats.length === 1 ? ' chat' : ' chats');
-            if (!chats.length) {
-                $('wa-conv-list').innerHTML = '<div class="p-6 text-xs text-slate-400">' + (chatChannel === 'All' ? 'No customer chats yet. Chats appear here as soon as a customer messages your AI assistant.' : 'No ' + chatChannel + ' chats yet.') + '</div>';
-                $('wa-thread-header').innerHTML = '';
-                $('wa-thread-body').innerHTML = '<div class="h-full flex items-center justify-center text-xs text-slate-400">Select a chat once customers start messaging.</div>';
-                $('wa-customer-panel').innerHTML = '';
-                return;
-            }
-            if (!chats.some(c => chatId(c) === activeChatKey)) activeChatKey = chatId(chats[0]);
-            $('wa-conv-list').innerHTML = chats.map(c => `
-                <button data-key="${escapeHTML(chatId(c))}" onclick="selectChat(this.dataset.key)" class="w-full text-left p-3.5 flex items-start gap-3 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/40 ${chatId(c) === activeChatKey ? 'bg-slate-50 dark:bg-slate-800/40' : ''}">
-                    <div class="w-9 h-9 rounded-xl ${sourceBadgeClass(c.channel)} flex items-center justify-center font-bold text-sm flex-none">${escapeHTML(chatTitle(c).charAt(0).toUpperCase())}</div>
-                    <div class="min-w-0 flex-1">
-                        <div class="flex justify-between items-baseline gap-2"><p class="text-xs font-extrabold truncate">${escapeHTML(chatTitle(c))}</p><span class="text-[10px] text-slate-400 flex-none">${escapeHTML(chatTime(c.last_ts))}</span></div>
-                        <p class="text-xs text-slate-500 truncate mt-0.5">${escapeHTML(c.last_text)}</p>
-                    </div>
-                </button>`).join('');
-            selectChat(activeChatKey, true);
-        }
-        function selectChat(key, skipList) {
-            activeChatKey = key;
-            if (!skipList) renderWhatsAppPage();
-            const conv = chatList().find(c => chatId(c) === key);
-            if (!conv) return;
-            $('wa-thread-header').innerHTML = `
-                <div class="w-9 h-9 rounded-xl ${sourceBadgeClass(conv.channel)} flex items-center justify-center font-bold text-sm">${escapeHTML(chatTitle(conv).charAt(0).toUpperCase())}</div>
-                <div><p class="text-sm font-extrabold">${escapeHTML(chatTitle(conv))}</p><p class="text-xs text-slate-400">${escapeHTML(conv.channel)} • ${conv.count} messages</p></div>
-                <span class="ml-auto text-[10px] font-bold px-2.5 py-1 rounded-full ${sourceBadgeClass(conv.channel)}">${escapeHTML(conv.channel)}</span>`;
-            $('wa-thread-body').innerHTML = conv.messages.map(m => `
-                <div class="flex ${m.d === 'in' ? 'justify-start' : 'justify-end'}">
-                    <div class="max-w-[75%]">
-                        <div class="px-3.5 py-2.5 rounded-2xl text-xs font-medium whitespace-pre-wrap break-words ${m.d === 'in' ? 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700' : 'bg-brand-600 text-white'}">${escapeHTML(m.t)}</div>
-                        <p class="text-[10px] text-slate-400 mt-1 ${m.d === 'in' ? '' : 'text-right'}">${m.d === 'in' ? 'Customer' : 'AI assistant'} • ${escapeHTML(chatTime(m.ts))}</p>
-                    </div>
-                </div>`).join('');
-            const body = $('wa-thread-body'); body.scrollTop = body.scrollHeight;
-            const mine = conv.customer_name ? allApts().filter(a => a.customer_name === conv.customer_name && String(a.source).toLowerCase() === conv.channel.toLowerCase()).sort((x, y) => (y.date + y.start_time).localeCompare(x.date + x.start_time)) : [];
-            const b = mine[0];
-            $('wa-customer-panel').innerHTML = `
-                <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3">Customer</h4>
-                <div class="space-y-2 text-xs mb-5">
-                    <div class="flex justify-between"><span class="text-slate-400">Name</span><span class="font-bold">${escapeHTML(conv.customer_name || 'Not booked yet')}</span></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Channel</span><span class="font-bold">${escapeHTML(conv.channel)}</span></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Messages</span><span class="font-bold">${conv.count}</span></div>
-                    <div class="flex justify-between"><span class="text-slate-400">Bookings</span><span class="font-bold">${mine.length}</span></div>
-                </div>
-                ${b ? `<div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 space-y-1.5 text-xs">
-                    <p class="font-extrabold text-brand-600">Latest booking</p>
-                    <div class="flex justify-between"><span>Service:</span><span class="font-bold">${escapeHTML(b.service)}</span></div>
-                    <div class="flex justify-between"><span>Slot:</span><span class="font-bold">${escapeHTML(formatDate(b.date))}, ${escapeHTML(formatTime(b.start_time))}</span></div>
-                    <div class="flex justify-between"><span>Status:</span><span class="font-bold">${escapeHTML(b.status)}</span></div>
-                    <div class="flex justify-between"><span>ID:</span><span class="font-mono font-bold">${escapeHTML(b.id)}</span></div>
-                </div>` : '<p class="text-xs text-slate-400">No booking linked to this chat yet.</p>'}`;
-        }
 
-        // ---------------------------------------------------------------
-        // FOLLOW-UPS (sample queue)
-        // ---------------------------------------------------------------
         function renderFollowupsPage() {
-            $('fu-due-count').textContent = FOLLOWUPS.due.length + ' Actionable';
-            $('fu-upcoming-count').textContent = FOLLOWUPS.upcoming.length + ' Queued';
-            $('fu-done-count').textContent = FOLLOWUPS.done.length + ' Completed';
+            $('fu-due-count').textContent = FOLLOWUPS.due.length;
+            $('fu-upcoming-count').textContent = FOLLOWUPS.upcoming.length;
+            $('fu-done-count').textContent = FOLLOWUPS.done.length;
             $('fu-due-list').innerHTML = FOLLOWUPS.due.map(f => `
-                <div class="p-4 flex items-center justify-between gap-2">
+                <div class="p-3.5 flex items-center justify-between gap-2">
                     <div><p class="text-xs font-extrabold">${escapeHTML(f.name)}</p><p class="text-[11px] text-slate-400">${escapeHTML(f.note)}</p></div>
-                    <button onclick="showToast('WhatsApp template dispatched via n8n!','success')" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-[11px] font-bold flex-none">Send Now</button>
+                    <button onclick="showToast('Dispatched!','success')" class="px-2.5 py-1 rounded-xl bg-emerald-600 text-white text-[10px] font-bold">Send</button>
                 </div>`).join('');
-            const item = f => `<div class="p-4"><p class="text-xs font-extrabold">${escapeHTML(f.name)}</p><p class="text-[11px] text-slate-400">${escapeHTML(f.note)}</p></div>`;
+            const item = f => `<div class="p-3.5"><p class="text-xs font-extrabold">${escapeHTML(f.name)}</p><p class="text-[11px] text-slate-400">${escapeHTML(f.note)}</p></div>`;
             $('fu-upcoming-list').innerHTML = FOLLOWUPS.upcoming.map(item).join('');
             $('fu-done-list').innerHTML = FOLLOWUPS.done.map(item).join('');
         }
 
-        // ---------------------------------------------------------------
-        // MODULES NOT CONNECTED YET (honest empty states)
-        // ---------------------------------------------------------------
         function renderMembershipsPage() {
             $('membership-table-body').innerHTML = MEMBERS.map(m => `
                 <tr>
-                    <td class="px-4 py-3.5 font-bold">${escapeHTML(m.member)}</td>
-                    <td class="px-4 py-3.5">${escapeHTML(m.plan)}</td>
-                    <td class="px-4 py-3.5 text-xs text-slate-500">${escapeHTML(m.renews)}</td>
-                    <td class="px-4 py-3.5 text-right font-mono font-bold">${m.visits}</td>
-                    <td class="px-4 py-3.5"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${m.status === 'Active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'}">${escapeHTML(m.status)}</span></td>
+                    <td class="px-4 py-3 font-bold">${escapeHTML(m.member)}</td>
+                    <td class="px-4 py-3">${escapeHTML(m.plan)}</td>
+                    <td class="px-4 py-3 text-xs text-slate-500">${escapeHTML(m.renews)}</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold">${m.visits}</td>
+                    <td class="px-4 py-3"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${m.status === 'Active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'}">${escapeHTML(m.status)}</span></td>
                 </tr>`).join('');
         }
+
         function renderInventoryPage() {
-            $('inventory-table-body').innerHTML = INVENTORY.map(p => {
-                const low = p.stock < p.min;
-                return `<tr class="${low ? 'bg-rose-50/40 dark:bg-rose-900/10' : ''}">
-                    <td class="px-4 py-3.5 font-bold">${escapeHTML(p.product)}</td>
-                    <td class="px-4 py-3.5 text-xs text-slate-500">${escapeHTML(p.category)}</td>
-                    <td class="px-4 py-3.5 text-right font-mono font-bold ${low ? 'text-rose-600' : ''}">${p.stock}</td>
-                    <td class="px-4 py-3.5 text-right font-mono text-slate-400">${p.min}</td>
-                    <td class="px-4 py-3.5">${low ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-600">Reorder Now</span>' : '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">Optimal</span>'}</td>
-                    <td class="px-4 py-3.5 text-xs text-slate-500">${escapeHTML(p.supplier)}</td>
-                </tr>`;
-            }).join('');
+            $('inventory-table-body').innerHTML = INVENTORY.map(p => `
+                <tr>
+                    <td class="px-4 py-3 font-bold">${escapeHTML(p.product)}</td>
+                    <td class="px-4 py-3 text-xs text-slate-500">${escapeHTML(p.category)}</td>
+                    <td class="px-4 py-3 text-right font-mono font-bold">${p.stock}</td>
+                    <td class="px-4 py-3 text-right font-mono text-slate-400">${p.min}</td>
+                    <td class="px-4 py-3"><span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600">Optimal</span></td>
+                    <td class="px-4 py-3 text-xs text-slate-500">${escapeHTML(p.supplier)}</td>
+                </tr>`).join('');
         }
 
-        // ---------------------------------------------------------------
-        // REPORTS (booked in the last N days)
-        // ---------------------------------------------------------------
         function renderReportsPage() {
             const days = Number($('reports-range').value || 30);
             const today = TODAY();
@@ -1853,121 +1814,101 @@
             const inRange = (a) => { const c = String(a.created_at || '').slice(0, 10) || a.date; return c >= from && c <= today; };
             const all = allApts().filter(inRange);
             const live = all.filter(a => String(a.status).toLowerCase() !== 'cancelled');
-            const cancelled = all.length - live.length;
             const value = sum(live, a => a.amount);
-            const uniq = new Set(live.map(a => a.ckey)).size;
-            const wa = live.filter(a => /whatsapp|instagram|facebook/i.test(String(a.source))).length;
             const kpis = [
                 { label: 'Booked Value', value: inr(value) },
                 { label: 'Bookings', value: live.length },
-                { label: 'Avg Ticket Size', value: inr(live.length ? Math.round(value / live.length) : 0) },
-                { label: 'Customers', value: uniq },
-                { label: 'Chatbot Bookings (WA+IG+FB)', value: wa },
-                { label: 'Cancellation Rate', value: (all.length ? Math.round(cancelled * 100 / all.length) : 0) + '%' }
+                { label: 'Avg Ticket', value: inr(live.length ? Math.round(value / live.length) : 0) }
             ];
             $('reports-kpis').innerHTML = kpis.map(k => `
-                <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-premium">
+                <div class="bg-surface-light dark:bg-surface-dark p-3 rounded-2xl border border-slate-200 dark:border-slate-800">
                     <p class="text-[10px] font-bold uppercase text-slate-400">${k.label}</p>
-                    <p class="text-xl font-extrabold font-mono mt-1">${k.value}</p>
+                    <p class="text-base sm:text-lg font-extrabold font-mono mt-1">${k.value}</p>
                 </div>`).join('');
-
-            const isDark = document.documentElement.classList.contains('dark');
-            const gridColor = isDark ? '#1e293b' : '#f1f5f9';
-            const tick = '#64748b';
 
             const bySvc = {};
             live.forEach(a => { bySvc[a.service] = (bySvc[a.service] || 0) + a.amount; });
-            const svcKeys = Object.keys(bySvc).sort((a, b) => bySvc[b] - bySvc[a]).slice(0, 8);
+            const svcKeys = Object.keys(bySvc).sort((a, b) => bySvc[b] - bySvc[a]).slice(0, 5);
             if (window.reportsServicesChartInstance) window.reportsServicesChartInstance.destroy();
             window.reportsServicesChartInstance = new Chart($('reportsServicesChart').getContext('2d'), {
                 type: 'bar',
-                data: { labels: svcKeys, datasets: [{ label: 'Booked value (₹)', data: svcKeys.map(k => bySvc[k]), backgroundColor: '#6366f1', borderRadius: 8 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: gridColor }, ticks: { color: tick } }, x: { grid: { display: false }, ticks: { color: tick } } } }
+                data: { labels: svcKeys, datasets: [{ label: 'Value (₹)', data: svcKeys.map(k => bySvc[k]), backgroundColor: '#6366f1', borderRadius: 6 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
 
-            const scale = days / 30;
             if (window.reportsLeadsChartInstance) window.reportsLeadsChartInstance.destroy();
             window.reportsLeadsChartInstance = new Chart($('reportsLeadsChart').getContext('2d'), {
                 type: 'line',
-                data: { labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'], datasets: [
-                    { label: 'WhatsApp Inquiries', data: [48, 56, 61, 50].map(v => Math.round(v * scale)), borderColor: '#10b981', tension: 0.35 },
-                    { label: 'Confirmed Bookings', data: [36, 44, 49, 39].map(v => Math.round(v * scale)), borderColor: '#6366f1', tension: 0.35 }
+                data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [
+                    { label: 'WhatsApp Inquiries', data: [40, 52, 58, 48], borderColor: '#10b981', tension: 0.3 },
+                    { label: 'Bookings', data: [32, 42, 45, 38], borderColor: '#6366f1', tension: 0.3 }
                 ] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { color: tick }, grid: { color: gridColor } }, x: { ticks: { color: tick }, grid: { display: false } } }, plugins: { legend: { labels: { color: tick } } } }
+                options: { responsive: true, maintainAspectRatio: false }
             });
         }
 
-        // ---------------------------------------------------------------
-        // SETTINGS (saved in this browser)
-        // ---------------------------------------------------------------
         function renderSettingsPage() {
             const p = state.profile;
             $('set-name').value = p.name || '';
             $('set-city').value = p.city || '';
             $('set-gstin').value = p.gstin || '';
-            $('set-phone').value = p.phone || '';
-            $('set-email').value = p.email || '';
             $('setting-monthly-target').value = state.monthlyTarget;
             $('set-heading').textContent = (p.name || 'Salon');
-            $('set-subheading').textContent = [p.city, p.gstin ? 'GSTIN: ' + p.gstin : ''].filter(Boolean).join(' • ') || 'Add your salon details below';
+            $('set-subheading').textContent = p.city || 'Enter salon address';
             $('set-initials').textContent = (p.name || 'UN').split(/\s+/).map(w => w.charAt(0)).join('').slice(0, 2).toUpperCase();
         }
         function saveSettings() {
             const target = Number($('setting-monthly-target').value);
-            if (!(target > 0)) { showToast('Monthly target must be a number greater than zero.', 'warn'); return; }
+            if (!(target > 0)) { showToast('Invalid target amount', 'warn'); return; }
             state.monthlyTarget = target;
-            state.profile = { name: $('set-name').value.trim() || 'Jawed Habib Salon', city: $('set-city').value.trim(), gstin: $('set-gstin').value.trim(), phone: $('set-phone').value.trim(), email: $('set-email').value.trim() };
+            state.profile = { name: $('set-name').value.trim() || 'Jawed Habib Salon', city: $('set-city').value.trim(), gstin: $('set-gstin').value.trim(), phone: '', email: '' };
             store.set('un_target', target);
             store.set('un_profile', state.profile);
             applyProfile();
             renderSettingsPage();
             renderDashboard();
-            showToast('Settings saved on this device.', 'success');
+            showToast('Settings saved.', 'success');
         }
 
-        // ---------------------------------------------------------------
-        // EXPORT / MISC
-        // ---------------------------------------------------------------
         function exportReportCSV() {
             const rows = [['Appointment ID', 'Customer', 'Service', 'Date', 'Time', 'Source', 'Status', 'Amount']];
             allApts().forEach(a => rows.push([a.id, a.customer_name, a.service, a.date, a.start_time, a.source, a.status, a.amount]));
-            if (rows.length === 1) { showToast('No appointments to export yet.', 'warn'); return; }
+            if (rows.length === 1) { showToast('No data to export.', 'warn'); return; }
             const csv = rows.map(r => r.map(v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(',')).join('\n');
-            const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url; a.download = `Jawed Habib_Appointments_${TODAY()}.csv`;
+            a.href = url; a.download = `Jawed_Habib_Appointments_${TODAY()}.csv`;
             document.body.appendChild(a); a.click(); a.remove();
             setTimeout(() => URL.revokeObjectURL(url), 1000);
-            showToast('Appointments exported to CSV.', 'success');
+            showToast('Exported CSV.', 'success');
         }
+
         function renderWorkflowStrip() {
             const steps = [
-                { icon: 'message-circle', label: 'WhatsApp Inquiry' },
-                { icon: 'bot', label: 'n8n AI Receptionist' },
-                { icon: 'sparkles', label: 'Slot Match' },
-                { icon: 'calendar-check', label: 'Instant Booking' },
-                { icon: 'database', label: 'Live CRM Sync' },
-                { icon: 'send', label: 'Telegram Owner Alert' },
-                { icon: 'bell-ring', label: 'Auto Reminder' },
-                { icon: 'star', label: '5★ Review Engine' }
+                { icon: 'message-circle', label: 'WA / IG Lead' },
+                { icon: 'bot', label: 'n8n Receptionist' },
+                { icon: 'sparkles', label: 'Slot Matching' },
+                { icon: 'calendar-check', label: 'Auto Booking' },
+                { icon: 'database', label: 'CRM Sync' },
+                { icon: 'send', label: 'Telegram Alert' }
             ];
             $('workflow-strip').innerHTML = steps.map((s, i) => `
-                <div class="flex items-center flex-none ${s.soon ? 'opacity-50' : ''}">
-                    <div class="flex flex-col items-center text-center px-3 py-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
-                        <div class="w-9 h-9 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-1.5 border border-brand-200/50 dark:border-brand-800/40"><i data-lucide="${s.icon}" class="w-4 h-4"></i></div>
-                        <p class="text-[11px] font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">${s.label}</p>
-                        ${s.soon ? '<p class="text-[9px] font-bold uppercase text-slate-400">Add-on</p>' : ''}
+                <div class="flex items-center flex-none">
+                    <div class="flex flex-col items-center text-center px-2 py-1.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                        <div class="w-8 h-8 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center mb-1"><i data-lucide="${s.icon}" class="w-3.5 h-3.5"></i></div>
+                        <p class="text-[10px] font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">${s.label}</p>
                     </div>
-                    ${i < steps.length - 1 ? '<i data-lucide="chevron-right" class="w-4 h-4 text-slate-300 dark:text-slate-700 mx-0.5 flex-none"></i>' : ''}
+                    ${i < steps.length - 1 ? '<i data-lucide="chevron-right" class="w-3 h-3 text-slate-300 mx-0.5 flex-none"></i>' : ''}
                 </div>`).join('');
         }
+
         function updateDateAndGreeting() {
             const now = new Date();
-            $('current-date').innerText = now.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            $('current-date').innerText = now.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
             const hr = now.getHours();
             const greet = hr < 12 ? 'Good Morning' : hr < 17 ? 'Good Afternoon' : 'Good Evening';
-            $('greeting-text').innerText = `${greet}, ${state.profile.name || 'Jawed Habib'} 👋`;
+            $('greeting-text').innerText = `${greet}, Jawed Habib 👋`;
         }
     </script>
 </body>
