@@ -1097,7 +1097,7 @@
         function getKey() {
             try {
                 const urlKey = new URLSearchParams(window.location.search).get('key');
-                if (urlKey) { localStorage.setItem(KEY_STORE, urlKey); return urlKey; }
+                if (urlKey) { localStorage.setItem(KEY_STORE, urlKey); try { history.replaceState(null, '', location.pathname); } catch (e) {} return urlKey; }
                 return localStorage.getItem(KEY_STORE) || DEFAULT_ACCESS_KEY || '';
             } catch (e) {
                 return DEFAULT_ACCESS_KEY || '';
@@ -1338,6 +1338,35 @@
         }
         function hideError() { const box = $('error-box'); box.classList.add('hidden'); box.classList.remove('flex'); }
 
+        // One-time access code prompt (saved on this phone, never asked again)
+        function showKeyPrompt(msg) {
+            let ov = document.getElementById('key-prompt');
+            if (!ov) {
+                ov = document.createElement('div');
+                ov.id = 'key-prompt';
+                ov.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(15,23,42,.65);display:flex;align-items:center;justify-content:center;padding:16px;';
+                ov.innerHTML = '<form id="key-form" style="background:#fff;color:#0f172a;border-radius:20px;padding:24px;max-width:360px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.3);font-family:inherit;">'
+                    + '<h3 style="font-size:18px;font-weight:800;margin:0 0 6px;">Enter Access Code</h3>'
+                    + '<p style="font-size:13px;color:#64748b;margin:0 0 14px;">Salon owner ne jo code diya hai wo yahan daalein. Sirf ek baar poochha jayega.</p>'
+                    + '<input id="key-input" type="password" autocomplete="off" placeholder="Access code" style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px;outline:none;">'
+                    + '<p id="key-err" style="color:#e11d48;font-size:12px;margin:8px 0 0;display:none;"></p>'
+                    + '<button type="submit" style="margin-top:14px;width:100%;padding:12px;border:0;border-radius:12px;background:#4f46e5;color:#fff;font-weight:700;font-size:15px;">Open Dashboard</button></form>';
+                document.body.appendChild(ov);
+                document.getElementById('key-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const v = document.getElementById('key-input').value.trim();
+                    if (!v) return;
+                    try { localStorage.setItem(KEY_STORE, v); } catch (er) {}
+                    ov.style.display = 'none';
+                    fetchDashboardData();
+                });
+            }
+            const err = document.getElementById('key-err');
+            if (msg) { err.textContent = msg; err.style.display = 'block'; } else { err.style.display = 'none'; }
+            document.getElementById('key-input').value = '';
+            ov.style.display = 'flex';
+        }
+
         async function fetchDashboardData() {
             if (state.inFlight) return;
             state.inFlight = true;
@@ -1348,6 +1377,7 @@
                 const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: '{}', mode: 'cors' });
                 if (!response.ok) throw new Error('HTTP ' + response.status);
                 const result = await response.json();
+                if (result && result.error === 'unauthorized') { showKeyPrompt(key ? 'Code galat hai, dobara try karein.' : ''); throw new Error('unauthorized'); }
                 if (!result || typeof result !== 'object' || !result.stats) throw new Error('Unexpected response');
                 state.data = result;
                 state.loaded = true;
@@ -1359,6 +1389,7 @@
             } catch (error) {
                 console.warn('Live sync failed:', error);
                 setSyncStatus('down', 'Offline');
+                if (error && error.message === 'unauthorized') { setSyncStatus('down', 'Access code needed'); return; }
                 showError(state.loaded ? 'Could not refresh from n8n. Showing the last data received.' : 'Could not reach the salon data service. No data to show yet.');
                 if (!state.loaded) $('ai-insight').innerText = 'Waiting for live data from n8n…';
             } finally {
